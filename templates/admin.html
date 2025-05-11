@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Torneo Smash</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .primary-bg { background-color: #4c51bf; }
+        .secondary-text { color: #2d3748; }
+        .primary-text { color: #4c51bf; }
+        .login-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 50;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Login Modal -->
+    <div id="loginModal" class="login-container">
+        <div class="bg-white p-8 rounded-lg shadow-xl max-w-md w-full">
+            <h2 class="text-2xl font-bold mb-6 text-center secondary-text">Acceso Administrativo</h2>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+                    Contraseña
+                </label>
+                <input 
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+                    id="password" 
+                    type="password" 
+                    placeholder="Ingrese la contraseña de administrador">
+                <p id="passwordError" class="text-red-500 text-xs italic mt-1 hidden">Contraseña incorrecta</p>
+            </div>
+            <div class="flex items-center justify-center">
+                <button id="loginBtn" class="primary-bg hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+                    Ingresar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-white shadow">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex justify-between items-center">
+                <h1 class="text-3xl font-bold primary-text">Panel de Administración</h1>
+                <button id="logoutBtn" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                    Cerrar Sesión
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <div class="mb-10">
+            <h2 class="text-2xl font-bold mb-6 secondary-text">Administración de Torneo Smash</h2>
+            
+            <!-- Tabs -->
+            <div class="border-b border-gray-200 mb-6">
+                <ul class="flex flex-wrap -mb-px">
+                    <li class="mr-2">
+                        <button id="participantesTab" class="inline-block py-4 px-4 text-sm font-medium text-center text-indigo-600 border-b-2 border-indigo-600 active">
+                            Participantes
+                        </button>
+                    </li>
+                    <li class="mr-2">
+                        <button id="cambiarGruposTab" class="inline-block py-4 px-4 text-sm font-medium text-center text-gray-500 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300">
+                            Cambiar Grupos
+                        </button>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Participantes Tab Content -->
+            <div id="participantesContent" class="mb-6">
+                <div class="mb-4 flex justify-between items-center">
+                    <h3 class="text-xl font-semibold">Lista de Participantes</h3>
+                    <div class="flex space-x-2">
+                        <button id="agregarParticipante" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded flex items-center">
+                            <i class="fas fa-plus mr-2"></i> Agregar
+                        </button>
+                        <input type="text" id="buscarParticipante" placeholder="Buscar participante..." class="border border-gray-300 rounded px-3 py-2">
+                    </div>
+                </div>
+                
+                <div class="bg-white shadow overflow-hidden rounded-lg">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Grupo</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200" id="participantesTable">
+                            {% for grupo in grupos %}
+                                {% for integrante in grupo.integrantes %}
+                                <tr class="participante-row" data-nombre="{{ integrante.nombre|lower }}">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ integrante.id }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 {% if integrante.descalificado %}line-through opacity-70{% endif %}">
+                                        {{ integrante.nombre }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ grupo.grupo_nombre }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                            {% if integrante.descalificado %}
+                                            bg-red-100 text-red-800
+                                            {% else %}
+                                            bg-green-100 text-green-800
+                                            {% endif %}">
+                                            {{ 'Descalificado' if integrante.descalificado else 'Activo' }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <button 
+                                            class="toggle-status mr-2 px-3 py-1 rounded text-white 
+                                            {% if integrante.descalificado %}
+                                            bg-green-500 hover:bg-green-600
+                                            {% else %}
+                                            bg-red-500 hover:bg-red-600
+                                            {% endif %}"
+                                            data-id="{{ integrante.id }}"
+                                            data-status="{{ integrante.descalificado|int }}">
+                                            {{ 'Habilitar' if integrante.descalificado else 'Descalificar' }}
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Cambiar Grupos Tab Content -->
+            <div id="cambiarGruposContent" class="hidden">
+                <h3 class="text-xl font-semibold mb-4">Cambiar Participantes de Grupo</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Selección de Participante -->
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h4 class="font-semibold mb-4 primary-text">Seleccionar Participante</h4>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="selectParticipante">
+                                Participante
+                            </label>
+                            <select id="selectParticipante" class="w-full border border-gray-300 rounded px-3 py-2">
+                                <option value="">Seleccione un participante</option>
+                                {% for grupo in grupos %}
+                                    {% for integrante in grupo.integrantes %}
+                                        <option value="{{ integrante.id }}" data-grupo="{{ grupo.grupo_id }}">
+                                            {{ integrante.nombre }} ({{ grupo.grupo_nombre }})
+                                        </option>
+                                    {% endfor %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Selección de Grupo Destino -->
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h4 class="font-semibold mb-4 primary-text">Grupo Destino</h4>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="selectGrupoDestino">
+                                Grupo Destino
+                            </label>
+                            <select id="selectGrupoDestino" class="w-full border border-gray-300 rounded px-3 py-2">
+                                <option value="">Seleccione un grupo</option>
+                                {% for grupo in grupos %}
+                                    <option value="{{ grupo.grupo_id }}">{{ grupo.grupo_nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6 flex justify-center">
+                    <button id="cambiarGrupoBtn" class="primary-bg hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded">
+                        Cambiar de Grupo
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Agregar Participante Modal -->
+    <div id="agregarModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white p-8 rounded-lg shadow-xl max-w-md w-full">
+            <h3 class="text-xl font-bold mb-4">Agregar Nuevo Participante</h3>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="nombreNuevo">
+                    Nombre
+                </label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="nombreNuevo" type="text" placeholder="Nombre del participante">
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="grupoNuevo">
+                    Grupo
+                </label>
+                <select id="grupoNuevo" class="w-full border border-gray-300 rounded px-3 py-2">
+                    {% for grupo in grupos %}
+                        <option value="{{ grupo.grupo_id }}">{{ grupo.grupo_nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="flex justify-end">
+                <button id="cancelarAgregar" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded mr-2">
+                    Cancelar
+                </button>
+                <button id="confirmarAgregar" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+                    Guardar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Autenticación
+        const loginModal = document.getElementById('loginModal');
+        const loginBtn = document.getElementById('loginBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const passwordInput = document.getElementById('password');
+        const passwordError = document.getElementById('passwordError');
+        const CORRECT_PASSWORD = 'cherry2025';
+
+        // Check if already authenticated
+        if (!sessionStorage.getItem('adminAuth')) {
+            loginModal.classList.remove('hidden');
+        } else {
+            loginModal.classList.add('hidden');
+        }
+
+        // Login functionality
+        loginBtn.addEventListener('click', () => {
+            if (passwordInput.value === CORRECT_PASSWORD) {
+                sessionStorage.setItem('adminAuth', 'true');
+                loginModal.classList.add('hidden');
+                passwordError.classList.add('hidden');
+            } else {
+                passwordError.classList.remove('hidden');
+                passwordInput.value = '';
+            }
+        });
+
+        // Logout functionality
+        logoutBtn.addEventListener('click', () => {
+            sessionStorage.removeItem('adminAuth');
+            loginModal.classList.remove('hidden');
+        });
+
+        // Also check on enter key
+        passwordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                loginBtn.click();
+            }
+        });
+
+        // Tabs functionality
+        const participantesTab = document.getElementById('participantesTab');
+        const cambiarGruposTab = document.getElementById('cambiarGruposTab');
+        const participantesContent = document.getElementById('participantesContent');
+        const cambiarGruposContent = document.getElementById('cambiarGruposContent');
+
+        participantesTab.addEventListener('click', () => {
+            participantesTab.classList.add('text-indigo-600', 'border-indigo-600');
+            participantesTab.classList.remove('text-gray-500', 'border-transparent');
+            cambiarGruposTab.classList.remove('text-indigo-600', 'border-indigo-600');
+            cambiarGruposTab.classList.add('text-gray-500', 'border-transparent');
+            
+            participantesContent.classList.remove('hidden');
+            cambiarGruposContent.classList.add('hidden');
+        });
+
+        cambiarGruposTab.addEventListener('click', () => {
+            cambiarGruposTab.classList.add('text-indigo-600', 'border-indigo-600');
+            cambiarGruposTab.classList.remove('text-gray-500', 'border-transparent');
+            participantesTab.classList.remove('text-indigo-600', 'border-indigo-600');
+            participantesTab.classList.add('text-gray-500', 'border-transparent');
+            
+            cambiarGruposContent.classList.remove('hidden');
+            participantesContent.classList.add('hidden');
+        });
+
+        // Búsqueda de participantes
+        const buscarInput = document.getElementById('buscarParticipante');
+        const participanteRows = document.querySelectorAll('.participante-row');
+
+        buscarInput.addEventListener('input', () => {
+            const searchTerm = buscarInput.value.toLowerCase();
+            
+            participanteRows.forEach(row => {
+                const nombre = row.getAttribute('data-nombre');
+                if (nombre.includes(searchTerm)) {
+                    row.classList.remove('hidden');
+                } else {
+                    row.classList.add('hidden');
+                }
+            });
+        });
+
+        // Toggle status functionality
+        const toggleBtns = document.querySelectorAll('.toggle-status');
+        
+        toggleBtns.forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const id = btn.getAttribute('data-id');
+                const currentStatus = parseInt(btn.getAttribute('data-status'));
+                const newStatus = currentStatus === 1 ? false : true;
+                
+                try {
+                    const response = await fetch(`/integrante/${id}/estado`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ descalificado: newStatus })
+                    });
+                    
+                    if (response.ok) {
+                        // Update UI
+                        window.location.reload();
+                    } else {
+                        alert('Error al cambiar el estado del participante');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Ocurrió un error al procesar la solicitud');
+                }
+            });
+        });
+
+        // Cambiar participante de grupo
+        const cambiarGrupoBtn = document.getElementById('cambiarGrupoBtn');
+        const selectParticipante = document.getElementById('selectParticipante');
+        const selectGrupoDestino = document.getElementById('selectGrupoDestino');
+
+        cambiarGrupoBtn.addEventListener('click', async () => {
+            const integranteId = selectParticipante.value;
+            const grupoDestino = selectGrupoDestino.value;
+            
+            if (!integranteId || !grupoDestino) {
+                alert('Por favor seleccione un participante y un grupo destino');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/integrante/${integranteId}/cambiar_grupo`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ grupo_id: grupoDestino })
+                });
+                
+                if (response.ok) {
+                    // Update UI
+                    window.location.reload();
+                } else {
+                    alert('Error al cambiar de grupo al participante');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Ocurrió un error al procesar la solicitud');
+            }
+        });
+
+        // Agregar participante modal
+        const agregarBtn = document.getElementById('agregarParticipante');
+        const agregarModal = document.getElementById('agregarModal');
+        const cancelarAgregar = document.getElementById('cancelarAgregar');
+        const confirmarAgregar = document.getElementById('confirmarAgregar');
+        const nombreNuevo = document.getElementById('nombreNuevo');
+        const grupoNuevo = document.getElementById('grupoNuevo');
+
+        agregarBtn.addEventListener('click', () => {
+            agregarModal.classList.remove('hidden');
+        });
+
+        cancelarAgregar.addEventListener('click', () => {
+            agregarModal.classList.add('hidden');
+            nombreNuevo.value = '';
+        });
+
+        confirmarAgregar.addEventListener('click', async () => {
+            const nombre = nombreNuevo.value.trim();
+            const grupoId = grupoNuevo.value;
+            
+            if (!nombre) {
+                alert('Por favor ingrese un nombre');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/grupo/${grupoId}/integrante`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ nombre: nombre })
+                });
+                
+                if (response.ok) {
+                    // Update UI
+                    window.location.reload();
+                } else {
+                    alert('Error al agregar participante');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Ocurrió un error al procesar la solicitud');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Torneo Super Smash Bros - USE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #5ce1e6;
+            --secondary-color: #4e4a47;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        .primary-bg {
+            background-color: var(--primary-color);
+        }
+
+        .secondary-bg {
+            background-color: var(--secondary-color);
+        }
+
+        .primary-text {
+            color: var(--primary-color);
+        }
+
+        .secondary-text {
+            color: var(--secondary-color);
+        }
+
+        .mascot {
+            filter: drop-shadow(0 0 20px rgba(92, 225, 230, 0.5));
+        }
+
+        .nav-link {
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(92, 225, 230, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .tournament-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.5rem;
+        }
+
+        .tournament-card img {
+            transition: all 0.5s ease;
+        }
+
+        .tournament-card:hover img {
+            filter: blur(0);
+            transform: scale(1.05);
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .slide-up {
+            animation: slideUp 0.8s ease-in-out;
+        }
+
+        @keyframes slideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .rule-card {
+            transition: all 0.3s ease;
+        }
+
+        .rule-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .mechanic-icon {
+            transition: all 0.3s ease;
+        }
+
+        .mechanic-card:hover .mechanic-icon {
+            transform: scale(1.1);
+        }
+
+        .round-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .round-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary-color);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="fixed w-full secondary-bg shadow-md z-50">
+        <div class="container mx-auto px-4 py-2">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <img src="{{ url_for('static', filename='images/mascota_3.png') }}" alt="Mascota Hurón de las Nieves" class="h-16 mascot">
+
+                    <div class="ml-3">
+                        <h1 class="text-3xl font-bold primary-text">USE</h1>
+                        <p class="text-white text-sm">Unión Social Estudiantil</p>
+                    </div>
+                </div>
+                <div class="hidden md:flex space-x-4">
+                    <a href="{{ url_for('index') }}" class="nav-link text-white py-2 px-4 rounded">Inicio</a>
+                    <a href="#reglas" class="nav-link text-white py-2 px-4 rounded">Reglas</a>
+                    <a href="#mecanicas" class="nav-link text-white py-2 px-4 rounded">Mecánicas</a>
+                    <a href="#torneo" class="nav-link text-white py-2 px-4 rounded">Torneo</a>
+                    <a href="#rondas" class="nav-link text-white py-2 px-4 rounded">Rondas</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="menu-toggle" class="text-white focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden w-full secondary-bg">
+            <div class="px-2 pt-2 pb-4 space-y-1">
+                <a href="index.html" class="block text-white py-2 px-4 rounded">Inicio</a>
+                <a href="#reglas" class="block text-white py-2 px-4 rounded">Reglas</a>
+                <a href="#mecanicas" class="block text-white py-2 px-4 rounded">Mecánicas</a>
+                <a href="#torneo" class="block text-white py-2 px-4 rounded">Torneo</a>
+                <a href="#rondas" class="block text-white py-2 px-4 rounded">Rondas</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 primary-bg">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-10 md:mb-0">
+                <h1 class="text-4xl md:text-6xl font-bold text-white leading-tight mb-4">Torneo Super Smash Bros</h1>
+                <h2 class="text-2xl md:text-3xl font-semibold secondary-text mb-6">¡Demuestra tus habilidades en el
+                    campo de batalla!</h2>
+                <p class="text-white text-lg mb-8">Únete a nuestro emocionante torneo de Smash Bros y compite para
+                    convertirte en el campeón indiscutible. El torneo cuenta con diferentes rondas y reglas específicas
+                    para garantizar una competencia justa y divertida.</p>
+                <div class="flex flex-wrap gap-4">
+                    <a href="#reglas"
+                        class="secondary-bg text-white font-bold py-3 px-6 rounded-lg hover:opacity-90 transition duration-300">Ver
+                        Reglas</a>
+                    <a href="#inscripcion"
+                        class="bg-white text-gray-800 font-bold py-3 px-6 rounded-lg hover:bg-gray-100 transition duration-300">Inscribirme</a>
+                </div>
+            </div>
+            <div class="md:w-1/2 flex justify-center">
+<img src="{{ url_for('static', filename='images/smash_banner.webp') }}" alt="Super Smash Bros"
+     class="rounded-lg shadow-2xl h-64 md:h-80 w-full object-cover">
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Reglas Section -->
+    <section id="reglas" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold secondary-text mb-2">Reglas del Torneo</h2>
+                <div class="w-24 h-1 primary-bg mx-auto mb-6"></div>
+                <p class="text-gray-600 max-w-2xl mx-auto">Conoce todas las reglas que se aplicarán durante las
+                    diferentes etapas del torneo.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-gray-50 rounded-lg shadow-md p-6 hover:shadow-xl transition duration-300 rule-card">
+                    <div class="text-3xl primary-text mb-4">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 secondary-text">Reglas Generales</h3>
+                    <ul class="text-gray-600 space-y-2">
+                        <li><span class="font-semibold">Personajes:</span> Todo el catálogo disponible (excepto DLCs)
+                        </li>
+                        <li><span class="font-semibold">Baneos:</span> Cada jugador puede banear personajes</li>
+                        <li><span class="font-semibold">Asistencia:</span> 60 segundos de tolerancia antes de
+                            descalificación</li>
+                        <li><span class="font-semibold">Fair Play:</span> No se permite hacer equipo entre jugadores
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-50 rounded-lg shadow-md p-6 hover:shadow-xl transition duration-300 rule-card">
+                    <div class="text-3xl primary-text mb-4">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 secondary-text">Primera y Segunda Ronda</h3>
+                    <ul class="text-gray-600 space-y-2">
+                        <li><span class="font-semibold">Vidas:</span> 3 por jugador</li>
+                        <li><span class="font-semibold">Duración:</span> 5 minutos por partida</li>
+                        <li><span class="font-semibold">Jugadores:</span> 4 por partida</li>
+                        <li><span class="font-semibold">Clasifican:</span> Primer lugar y mayor cantidad de
+                            eliminaciones (2 en total)</li>
+                        <li><span class="font-semibold">Baneos:</span> 1 personaje por jugador</li>
+                        <li><span class="font-semibold">Ultimate:</span> Habilitado</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-50 rounded-lg shadow-md p-6 hover:shadow-xl transition duration-300 rule-card">
+                    <div class="text-3xl primary-text mb-4">
+                        <i class="fas fa-medal"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 secondary-text">Tercera Ronda en adelante</h3>
+                    <ul class="text-gray-600 space-y-2">
+                        <li><span class="font-semibold">Duración:</span> Indefinida (sin límite de tiempo)</li>
+                        <li><span class="font-semibold">Jugadores:</span> 2 por partida</li>
+                        <li><span class="font-semibold">Clasifican:</span> Solo el primer lugar</li>
+                        <li><span class="font-semibold">Baneos:</span> 2 personajes por jugador</li>
+                        <li><span class="font-semibold">Ultimate:</span> Deshabilitado</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mecánicas Section -->
+    <section id="mecanicas" class="py-20 secondary-bg">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-white mb-2">Mecánicas de Juego</h2>
+                <div class="w-24 h-1 primary-bg mx-auto mb-6"></div>
+                <p class="text-gray-300 max-w-2xl mx-auto">Conoce los detalles técnicos que se aplicarán durante las
+                    partidas del torneo.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition duration-300 mechanic-card">
+                    <div class="flex justify-center mb-4">
+                        <div class="text-4xl primary-text mechanic-icon">
+                            <i class="fas fa-map"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-3 secondary-text">Escenarios</h3>
+                    <p class="text-gray-600 text-center">Campo de batalla aleatorio para todas las rondas. No se
+                        permiten escenarios con mecanismos especiales.</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition duration-300 mechanic-card">
+                    <div class="flex justify-center mb-4">
+                        <div class="text-4xl primary-text mechanic-icon">
+                            <i class="fas fa-box"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-3 secondary-text">Objetos</h3>
+                    <p class="text-gray-600 text-center">No hay objetos habilitados durante ninguna fase del torneo para
+                        mantener el enfoque en la habilidad de los jugadores.</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition duration-300 mechanic-card">
+                    <div class="flex justify-center mb-4">
+                        <div class="text-4xl primary-text mechanic-icon">
+                            <i class="fas fa-ghost"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-3 secondary-text">Espíritus</h3>
+                    <p class="text-gray-600 text-center">No se permiten espíritus en ninguna fase del torneo para
+                        garantizar un juego equilibrado entre todos los participantes.</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition duration-300 mechanic-card">
+                    <div class="flex justify-center mb-4">
+                        <div class="text-4xl primary-text mechanic-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-3 secondary-text">Ultimate</h3>
+                    <p class="text-gray-600 text-center">Habilitado solo en primera y segunda ronda. Deshabilitado a
+                        partir de la tercera ronda para enfocarse en la habilidad pura.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Torneo Section -->
+    <section  class="py-20 bg-white" id="inscripcion">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold secondary-text mb-2">Estructura del Torneo</h2>
+                <div class="w-24 h-1 primary-bg mx-auto mb-6"></div>
+                <p class="text-gray-600 max-w-2xl mx-auto">Conoce cómo se desarrollará el torneo desde las rondas
+                    iniciales hasta la gran final.</p>
+            </div>
+
+            <div class="max-w-4xl mx-auto bg-gray-50 rounded-lg shadow-lg overflow-hidden">
+                <div class="p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-2xl font-bold secondary-text">Formato del Torneo</h3>
+                        <span class="primary-bg text-white text-sm py-1 px-4 rounded-full">Eliminación directa</span>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="text-3xl primary-text mr-4">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold secondary-text mb-2">Participantes</h4>
+                                <p class="text-gray-600">El torneo está abierto a todos los estudiantes de la
+                                    institución que deseen participar. Los cupos son limitados, así que asegúrate de
+                                    inscribirte a tiempo.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="text-3xl primary-text mr-4">
+                                <i class="fas fa-clipboard-list"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold secondary-text mb-2">Proceso de Inscripción</h4>
+                                <p class="text-gray-600">Para inscribirte, debes completar el formulario disponible en
+                                    el enlace de inscripción. Se requiere tu nombre completo, sección y personaje
+                                    principal que piensas utilizar.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="text-3xl primary-text mr-4">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold secondary-text mb-2">Fechas Importantes</h4>
+                                <ul class="text-gray-600 list-disc pl-5 space-y-2">
+                                    <li><span class="font-semibold">Inscripciones:</span> Hasta el 11 de mayo, 2025</li>
+                                    <li><span class="font-semibold">Primera y segunda ronda:</span> 12 de mayo, 2025
+                                        (1:20 p.m - 2:00 p.m)</li>
+                                    <li><span class="font-semibold">Rondas finales:</span> 14 de mayo, 2025 (8:20 a.m -
+                                        9:00 a.m)</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="text-3xl primary-text mr-4">
+                                <i class="fas fa-gift"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold secondary-text mb-2">Premios</h4>
+                                <p class="text-gray-600">Los ganadores recibirán premios especiales que serán anunciados
+                                    el día del torneo. Además, tendrán reconocimiento en la página web y redes sociales
+                                    de USE.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-10" >
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSf61i1MK_D8RDmoRGdaa-PHspQHdl3u7HXaBAdo9MlNRa7kHA/viewform?usp=dialog"
+                    class="primary-bg text-white font-bold py-3 px-8 rounded-lg hover:opacity-90 transition duration-300 inline-flex items-center">
+                    <i class="fas fa-pencil-alt mr-2"></i> Inscribirme al Torneo
+                </a>
+            </div>
+        </div>
+    </section>
+<!-- Horarios Section -->
+<section id="horarios" class="py-20 bg-gray-100">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold secondary-text mb-2">Horarios del Torneo</h2>
+            <div class="w-24 h-1 primary-bg mx-auto mb-6"></div>
+            <p class="text-gray-600 max-w-2xl mx-auto">Consulta los horarios detallados para cada fase del torneo.</p>
+        </div>
+
+        <div class="max-w-4xl mx-auto space-y-8">
+            <!-- Primera Ronda -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden round-card">
+                <div class="p-6">
+                    <h3 class="text-2xl font-bold mb-3 secondary-text">Horario para Ronda #1</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <ul class="text-gray-600 space-y-3">
+                                <li><span class="font-semibold">Grupo #1:</span> 1:20 PM</li>
+                                <li><span class="font-semibold">Grupo #2:</span> 1:26 PM</li>
+                                <li><span class="font-semibold">Grupo #3:</span> 1:32 PM</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <ul class="text-gray-600 space-y-3">
+                                <li><span class="font-semibold">Grupo #4:</span> 1:38 PM</li>
+                                <li><span class="font-semibold">Grupo #5:</span> 1:44 PM</li>
+                                <li><span class="font-semibold">Grupo #6:</span> 1:50 PM</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Segunda Ronda -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden round-card">
+                <div class="p-6">
+                    <h3 class="text-2xl font-bold mb-3 secondary-text">Horario para Ronda #2</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <ul class="text-gray-600 space-y-3">
+                                <li><span class="font-semibold">Grupo #7:</span> 8:20 AM</li>
+                                <li><span class="font-semibold">Grupo #8:</span> 8:28 AM</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <ul class="text-gray-600 space-y-3">
+                                <li><span class="font-semibold">Grupo #9:</span> 8:36 AM</li>
+                                <li><span class="font-semibold">Grupo #10:</span> 8:44 AM</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Duelos -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden round-card">
+                <div class="p-6">
+                    <h3 class="text-2xl font-bold mb-3 secondary-text">Horario para Duelos #1</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <ul class="text-gray-600 space-y-3">
+                                <li><span class="font-semibold">Duelo #1:</span> 1:20 PM</li>
+                                <li><span class="font-semibold">Duelo #2:</span> 1:30 PM</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <ul class="text-gray-600 space-y-3">
+                                <li><span class="font-semibold">Duelo #3:</span> 1:40 PM</li>
+                                <li><span class="font-semibold">Duelo #4:</span> 1:50 PM</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Semifinales -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden round-card">
+                <div class="p-6">
+                    <h3 class="text-2xl font-bold mb-3 secondary-text">Horario para Semifinales</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <ul class="text-gray-600 space-y-3">
+                                <li><span class="font-semibold">Semifinal #1:</span> 8:20 AM</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <ul class="text-gray-600 space-y-3">
+                                <li><span class="font-semibold">Semifinal #2:</span> 8:30 AM</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Final -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden round-card">
+                <div class="p-6">
+                    <h3 class="text-2xl font-bold mb-3 secondary-text">Horario para Final</h3>
+                    <div class="grid grid-cols-1 gap-6">
+                        <div class="mx-auto">
+                            <ul class="text-gray-600 space-y-3">
+                                <li><span class="font-semibold">Final:</span> 8:40 AM</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mt-4 p-4 bg-gray-100 rounded-lg">
+                        <p class="text-gray-600 italic">Nota: Se recomienda a todos los participantes estar presentes al menos 5 minutos antes de la hora programada para su grupo o duelo.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    <!-- Rondas Section -->
+    <section id="rondas" class="py-20 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold secondary-text mb-2">Detalle de Rondas</h2>
+                <div class="w-24 h-1 primary-bg mx-auto mb-6"></div>
+                <p class="text-gray-600 max-w-2xl mx-auto">Conoce con detalle cómo se desarrollará cada ronda del
+                    torneo.</p>
+            </div>
+
+            <div class="max-w-4xl mx-auto space-y-8">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden round-card">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-3 secondary-text">Primera Ronda</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <ul class="text-gray-600 space-y-3">
+                                    <li><span class="font-semibold">Formato:</span> 4 jugadores por partida</li>
+                                    <li><span class="font-semibold">Vidas:</span> 3 por jugador</li>
+                                    <li><span class="font-semibold">Tiempo:</span> 5 minutos</li>
+                                    <li><span class="font-semibold">Baneos:</span> 1 personaje por jugador</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <ul class="text-gray-600 space-y-3">
+                                    <li><span class="font-semibold">Ultimate:</span> Habilitado</li>
+                                    <li><span class="font-semibold">Clasifican:</span> 2 jugadores por partida</li>
+                                    <li><span class="font-semibold">Criterio:</span> 1er lugar y mayor número de
+                                        eliminaciones</li>
+                                    <li><span class="font-semibold">Escenario:</span> Campo de batalla aleatorio</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md overflow-hidden round-card">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-3 secondary-text">Segunda Ronda</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <ul class="text-gray-600 space-y-3">
+                                    <li><span class="font-semibold">Formato:</span> 4 jugadores por partida</li>
+                                    <li><span class="font-semibold">Vidas:</span> 3 por jugador</li>
+                                    <li><span class="font-semibold">Tiempo:</span> 5 minutos</li>
+                                    <li><span class="font-semibold">Baneos:</span> 1 personaje por jugador</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <ul class="text-gray-600 space-y-3">
+                                    <li><span class="font-semibold">Ultimate:</span> Habilitado</li>
+                                    <li><span class="font-semibold">Clasifican:</span> 2 jugadores por partida</li>
+                                    <li><span class="font-semibold">Criterio:</span> 1er lugar y mayor número de
+                                        eliminaciones</li>
+                                    <li><span class="font-semibold">Escenario:</span> Campo de batalla aleatorio</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md overflow-hidden round-card">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-3 secondary-text">Tercera Ronda y Semifinales</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <ul class="text-gray-600 space-y-3">
+                                    <li><span class="font-semibold">Formato:</span> 2 jugadores por partida</li>
+                                    <li><span class="font-semibold">Duración:</span> Indefinida (sin límite)</li>
+                                    <li><span class="font-semibold">Baneos:</span> 2 personajes por jugador</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <ul class="text-gray-600 space-y-3">
+                                    <li><span class="font-semibold">Ultimate:</span> Deshabilitado</li>
+                                    <li><span class="font-semibold">Clasifican:</span> Solo el ganador</li>
+                                    <li><span class="font-semibold">Escenario:</span> Campo de batalla aleatorio</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md overflow-hidden round-card">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-3 secondary-text">Gran Final</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <ul class="text-gray-600 space-y-3">
+                                    <li><span class="font-semibold">Formato:</span> 2 jugadores</li>
+                                    <li><span class="font-semibold">Duración:</span> Indefinida (sin límite)</li>
+                                    <li><span class="font-semibold">Baneos:</span> 2 personajes por jugador</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <ul class="text-gray-600 space-y-3">
+                                    <li><span class="font-semibold">Ultimate:</span> Deshabilitado</li>
+                                    <li><span class="font-semibold">Formato:</span> Al mejor de 3 partidas</li>
+                                    <li><span class="font-semibold">Escenario:</span> Campo de batalla aleatorio</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mt-4 p-4 bg-gray-100 rounded-lg">
+                            <p class="text-gray-600 italic">Nota: En caso de empate en la final, se jugará una partida
+                                adicional con las mismas reglas para determinar al campeón.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<section id="bracket" class="py-20 bg-gray-100">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold secondary-text mb-2">Bracket del Torneo</h2>
+            <div class="w-24 h-1 primary-bg mx-auto mb-6"></div>
+            <p class="text-gray-600 max-w-2xl mx-auto">Sigue el progreso de los participantes a través de las
+                diferentes rondas del torneo.</p>
+        </div>
+
+        <!-- Primera Ronda -->
+        <div class="mb-16">
+            <h3 class="text-2xl font-bold mb-6 text-center secondary-text">Primera Ronda</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                {% for grupo in grupos %}
+                    {% if grupo.grupo_id >= 1 and grupo.grupo_id <= 6 %}
+                        <div class="bg-white p-4 rounded-lg shadow-md">
+                            <h4 class="text-lg font-semibold mb-3 text-center primary-text">{{ grupo.grupo_nombre }}</h4>
+                            <ul class="list-none space-y-2">
+                                {% if grupo.integrantes|length > 0 %}
+                                    {% for integrante in grupo.integrantes %}
+                                        <li class="p-2 text-center {% if not loop.last %}border-b border-gray-200{% endif %}">
+                                            {% if integrante.descalificado %}
+                                                <span style="text-decoration: line-through;">{{ integrante.nombre }}</span>
+                                            {% else %}
+                                                {{ integrante.nombre }}
+                                            {% endif %}
+                                        </li>
+                                    {% endfor %}
+                                {% else %}
+                                    {% for _ in range(4) %}
+                                        <li class="p-2 text-center {% if not loop.last %}border-b border-gray-200{% endif %}">__________</li>
+                                    {% endfor %}
+                                {% endif %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Segunda Ronda -->
+        <div class="mb-16">
+            <h3 class="text-2xl font-bold mb-6 text-center secondary-text">Segunda Ronda</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {% for grupo in grupos %}
+                    {% if grupo.grupo_id >= 7 and grupo.grupo_id <= 10 %}
+                        <div class="bg-white p-4 rounded-lg shadow-md">
+                            <h4 class="text-lg font-semibold mb-3 text-center primary-text">{{ grupo.grupo_nombre }}</h4>
+                            <ul class="list-none space-y-2">
+                                {% if grupo.integrantes|length > 0 %}
+                                    {% for integrante in grupo.integrantes %}
+                                        <li class="p-2 text-center {% if not loop.last %}border-b border-gray-200{% endif %}">
+                                            {% if integrante.descalificado %}
+                                                <span style="text-decoration: line-through;">{{ integrante.nombre }}</span>
+                                            {% else %}
+                                                {{ integrante.nombre }}
+                                            {% endif %}
+                                        </li>
+                                    {% endfor %}
+                                {% else %}
+                                    {% for _ in range(3) %}
+                                        <li class="p-2 text-center {% if not loop.last %}border-b border-gray-200{% endif %}">__________</li>
+                                    {% endfor %}
+                                {% endif %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Cuartos de Final -->
+        <div class="mb-16">
+            <h3 class="text-2xl font-bold mb-6 text-center secondary-text">Cuartos de Final</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {% for grupo in grupos %}
+                    {% if grupo.grupo_id >= 11 and grupo.grupo_id <= 14 %}
+                        <div class="bg-white p-4 rounded-lg shadow-md">
+                            <h4 class="text-lg font-semibold mb-3 text-center primary-text">{{ grupo.grupo_nombre }}</h4>
+                            <ul class="list-none space-y-2">
+                                {% if grupo.integrantes|length > 0 %}
+                                    {% for integrante in grupo.integrantes %}
+                                        <li class="p-2 text-center {% if not loop.last %}border-b border-gray-200{% endif %}">
+                                            {% if integrante.descalificado %}
+                                                <span style="text-decoration: line-through;">{{ integrante.nombre }}</span>
+                                            {% else %}
+                                                {{ integrante.nombre }}
+                                            {% endif %}
+                                        </li>
+                                    {% endfor %}
+                                {% else %}
+                                    {% for _ in range(2) %}
+                                        <li class="p-2 text-center {% if not loop.last %}border-b border-gray-200{% endif %}">__________</li>
+                                    {% endfor %}
+                                {% endif %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Semifinal -->
+        <div class="mb-16">
+            <h3 class="text-2xl font-bold mb-6 text-center secondary-text">Semifinal</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+                {% for grupo in grupos %}
+                    {% if grupo.grupo_id >= 15 and grupo.grupo_id <= 16 %}
+                        <div class="bg-white p-4 rounded-lg shadow-md">
+                            <h4 class="text-lg font-semibold mb-3 text-center primary-text">{{ grupo.grupo_nombre }}</h4>
+                            <ul class="list-none space-y-2">
+                                {% if grupo.integrantes|length > 0 %}
+                                    {% for integrante in grupo.integrantes %}
+                                        <li class="p-2 text-center {% if not loop.last %}border-b border-gray-200{% endif %}">
+                                            {% if integrante.descalificado %}
+                                                <span style="text-decoration: line-through;">{{ integrante.nombre }}</span>
+                                            {% else %}
+                                                {{ integrante.nombre }}
+                                            {% endif %}
+                                        </li>
+                                    {% endfor %}
+                                {% else %}
+                                    {% for _ in range(2) %}
+                                        <li class="p-2 text-center {% if not loop.last %}border-b border-gray-200{% endif %}">__________</li>
+                                    {% endfor %}
+                                {% endif %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Final -->
+        <div>
+            <h3 class="text-2xl font-bold mb-6 text-center secondary-text">Final</h3>
+            <div class="max-w-md mx-auto">
+                {% for grupo in grupos %}
+                    {% if grupo.grupo_id == 17 %}
+                        <div class="bg-white p-6 rounded-lg shadow-lg border-2 border-primary-bg">
+                            <h4 class="text-xl font-bold mb-4 text-center primary-text">¡Campeón del Torneo!</h4>
+                            <div class="p-3 bg-gray-100 rounded-lg text-center">
+                                <i class="fas fa-trophy text-yellow-500 text-4xl mb-2"></i>
+                                {% if grupo.integrantes|length > 0 %}
+                                    <p class="font-semibold">
+                                        {% if grupo.integrantes[0].descalificado %}
+                                            <span style="text-decoration: line-through;">{{ grupo.integrantes[0].nombre }}</span>
+                                        {% else %}
+                                            {{ grupo.integrantes[0].nombre }}
+                                        {% endif %}
+                                    </p>
+                                {% else %}
+                                    <p class="font-semibold">__________</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- Footer -->
+    <footer class="secondary-bg text-white py-10">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+                <div class="flex items-center mb-6 md:mb-0">
+                    <img src="{{ url_for('static', filename='images/mascota_3.png') }}" alt="Mascota Hurón de las Nieves" class="h-12 mascot">
+
+                    <div class="ml-3">
+                        <h3 class="text-xl font-bold primary-text">USE</h3>
+                        <p class="text-sm">Unión Social Estudiantil</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="#inicio" class="text-white hover:primary-text transition duration-300">Inicio</a>
+                    <a href="#miembros" class="text-white hover:primary-text transition duration-300">Miembros</a>
+                    <a href="#objetivos" class="text-white hover:primary-text transition duration-300">Objetivos</a>
+                    <a href="#propuestas" class="text-white hover:primary-text transition duration-300">Propuestas</a>
+                    <a href="#torneos" class="text-white hover:primary-text transition duration-300">Torneos</a>
+                </div>
+
+                <div class="flex gap-4 mt-6 md:mt-0">
+                    <a href="#" class="text-white hover:primary-text transition duration-300 text-xl">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-700 pt-6 text-center">
+                <p>&copy; 2025 Unión Social Estudiantil - USE. Todos los derechos reservados.</p>
+                <p class="mt-2 text-sm text-gray-400">Creado con 💙 por el equipo de USE para todos los estudiantes.</p>
+            </div>
+        </div>
+    </footer>
