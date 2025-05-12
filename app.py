@@ -28,13 +28,13 @@ def index():
 # Ver todos los grupos y sus integrantes (Smash)
 @app.route("/torneo_smash", methods=["GET"])
 def torneo_smash():
-    return render_template('torneo_smash.html')
+    datos = obtener_grupos_con_integrantes()
+    return render_template('torneo_smash.html', grupos=datos)
 
 # Ver todos los grupos y sus integrantes (MK)
 @app.route("/torneo_mk", methods=["GET"])
 def torneo_mk():
-    datos = obtener_grupos_con_integrantes_mk()
-    return render_template('torneo_mk.html', grupos=datos)
+    return render_template('torneo_mk.html')
 
 # Endpoint para descargar el cronograma
 @app.route('/download_cronograma', methods=['GET'])
