@@ -215,10 +215,6 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
                 <div class="bg-gray-50 rounded-lg shadow-md p-6 hover:shadow-xl transition duration-300 slide-up">
-                    <div class="flex justify-center mb-4">
-                        <img src="/api/placeholder/150/150" alt="Oseas Hernández Salas"
-                            class="rounded-full h-32 w-32 object-cover border-4 border-primary">
-                    </div>
                     <h3 class="text-xl font-bold text-center mb-2">Presidente</h3>
                     <p class="text-center font-semibold mb-1">Oseas Hernández Salas</p>
                     <p class="text-gray-600 text-center text-sm">11-4</p>
@@ -226,10 +222,6 @@
                 </div>
 
                 <div class="bg-gray-50 rounded-lg shadow-md p-6 hover:shadow-xl transition duration-300 slide-up">
-                    <div class="flex justify-center mb-4">
-                        <img src="/api/placeholder/150/150" alt="Sherma Castillo Brizuela"
-                            class="rounded-full h-32 w-32 object-cover border-4 border-primary">
-                    </div>
                     <h3 class="text-xl font-bold text-center mb-2">Vicepresidente</h3>
                     <p class="text-center font-semibold mb-1">Sherma Castillo Brizuela</p>
                     <p class="text-gray-600 text-center text-sm">10-4</p>
@@ -238,10 +230,6 @@
                 </div>
 
                 <div class="bg-gray-50 rounded-lg shadow-md p-6 hover:shadow-xl transition duration-300 slide-up">
-                    <div class="flex justify-center mb-4">
-                        <img src="/api/placeholder/150/150" alt="Esteban Guillermo"
-                            class="rounded-full h-32 w-32 object-cover border-4 border-primary">
-                    </div>
                     <h3 class="text-xl font-bold text-center mb-2">Secretario</h3>
                     <p class="text-center font-semibold mb-1">Esteban Guillermo</p>
                     <p class="text-gray-600 text-center text-sm">10-5</p>
@@ -250,10 +238,6 @@
                 </div>
 
                 <div class="bg-gray-50 rounded-lg shadow-md p-6 hover:shadow-xl transition duration-300 slide-up">
-                    <div class="flex justify-center mb-4">
-                        <img src="/api/placeholder/150/150" alt="Eymi López Pérez"
-                            class="rounded-full h-32 w-32 object-cover border-4 border-primary">
-                    </div>
                     <h3 class="text-xl font-bold text-center mb-2">Tesorero</h3>
                     <p class="text-center font-semibold mb-1">Eymi López Pérez</p>
                     <p class="text-gray-600 text-center text-sm">11-4</p>
@@ -265,10 +249,6 @@
             <!-- Nuevos miembros: Fiscal, Vocal 1 y Vocal 2 -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <div class="bg-gray-50 rounded-lg shadow-md p-6 hover:shadow-xl transition duration-300 slide-up">
-                    <div class="flex justify-center mb-4">
-                        <img src="/api/placeholder/150/150" alt="Isaac Bolaños Corrales"
-                            class="rounded-full h-32 w-32 object-cover border-4 border-primary">
-                    </div>
                     <h3 class="text-xl font-bold text-center mb-2">Fiscal</h3>
                     <p class="text-center font-semibold mb-1">Isaac Bolaños Corrales</p>
                     <p class="text-gray-600 text-center text-sm">11-5</p>
@@ -277,10 +257,6 @@
                 </div>
 
                 <div class="bg-gray-50 rounded-lg shadow-md p-6 hover:shadow-xl transition duration-300 slide-up">
-                    <div class="flex justify-center mb-4">
-                        <img src="/api/placeholder/150/150" alt="Ashley Michelle Martínez"
-                            class="rounded-full h-32 w-32 object-cover border-4 border-primary">
-                    </div>
                     <h3 class="text-xl font-bold text-center mb-2">Vocal 1</h3>
                     <p class="text-center font-semibold mb-1">Ashley Michelle Martínez</p>
                     <p class="text-gray-600 text-center text-sm">10-2</p>
@@ -289,10 +265,6 @@
                 </div>
 
                 <div class="bg-gray-50 rounded-lg shadow-md p-6 hover:shadow-xl transition duration-300 slide-up">
-                    <div class="flex justify-center mb-4">
-                        <img src="/api/placeholder/150/150" alt="James Ramos Valdelomar"
-                            class="rounded-full h-32 w-32 object-cover border-4 border-primary">
-                    </div>
                     <h3 class="text-xl font-bold text-center mb-2">Vocal 2</h3>
                     <p class="text-center font-semibold mb-1">James Ramos Valdelomar</p>
                     <p class="text-gray-600 text-center text-sm">10-3</p>
@@ -742,7 +714,7 @@
                     </div>
                 </a>
 
-                <a href="torneo-mk.html" class="tournament-card">
+                <a href="{{ url_for('torneo_mk') }}" class="tournament-card">
                     <img src="{{ url_for('static', filename='images/mk_banner.webp') }}" alt="Mortal Kombat" class="w-full h-full object-cover">
 
                     <div class="tournament-overlay">

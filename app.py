@@ -28,8 +28,7 @@ def index():
 # Ver todos los grupos y sus integrantes (Smash)
 @app.route("/torneo_smash", methods=["GET"])
 def torneo_smash():
-    datos = obtener_grupos_con_integrantes()
-    return render_template('torneo_smash.html', grupos=datos)
+    return render_template('torneo_smash.html')
 
 # Ver todos los grupos y sus integrantes (MK)
 @app.route("/torneo_mk", methods=["GET"])
@@ -134,6 +133,19 @@ def agregar_integrante_a_grupo_mk(grupo_id):
         "mensaje": f"{nombre} agregado al grupo {grupo_id}",
         "integrante_id": integrante.id
     })
+import threading
+import time
+import requests
+def ping_periodico():
+    while True:
+        try:
+            print("Haciendo ping a la URL...")
+            requests.get("https://union-social-estudiantil.onrender.com/")
+        except Exception as e:
+            print(f"Error al hacer ping: {e}")
+        time.sleep(30)  # Espera 30 segundos
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',port=8080, debug=True)
+    threading.Thread(target=ping_periodico, daemon=True).start()
+    app.run(host='0.0.0.0', port=8080, debug=True)
+

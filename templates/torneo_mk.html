@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Torneo Mortal Kombat - USE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #5ce1e6;
+            --secondary-color: #2a2a2a;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        .primary-bg {
+            background-color: var(--primary-color);
+        }
+
+        .secondary-bg {
+            background-color: var(--secondary-color);
+        }
+
+        .primary-text {
+            color: var(--primary-color);
+        }
+
+        .secondary-text {
+            color: var(--secondary-color);
+        }
+
+        .mascot {
+            filter: drop-shadow(0 0 20px rgba(230, 92, 92, 0.5));
+        }
+
+        .nav-link {
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(230, 92, 92, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .tournament-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.5rem;
+        }
+
+        .tournament-card img {
+            transition: all 0.5s ease;
+        }
+
+        .tournament-card:hover img {
+            filter: blur(0);
+            transform: scale(1.05);
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .slide-up {
+            animation: slideUp 0.8s ease-in-out;
+        }
+
+        @keyframes slideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .rule-card {
+            transition: all 0.3s ease;
+        }
+
+        .rule-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .mechanic-icon {
+            transition: all 0.3s ease;
+        }
+
+        .mechanic-card:hover .mechanic-icon {
+            transform: scale(1.1);
+        }
+
+        .round-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .round-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary-color);
+        }
+        
+        .participant-list {
+            columns: 2;
+            -webkit-columns: 2;
+            -moz-columns: 2;
+        }
+        
+        @media (max-width: 768px) {
+            .participant-list {
+                columns: 1;
+                -webkit-columns: 1;
+                -moz-columns: 1;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="fixed w-full secondary-bg shadow-md z-50">
+        <div class="container mx-auto px-4 py-2">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <img src="{{ url_for('static', filename='images/mascota_3.png') }}" alt="Mascota Mortal Kombat" class="h-16 mascot">
+
+                    <div class="ml-3">
+                        <h1 class="text-3xl font-bold primary-text">USE</h1>
+                        <p class="text-white text-sm">Unión Social Estudiantil</p>
+                    </div>
+                </div>
+                <div class="hidden md:flex space-x-4">
+                    <a href="{{ url_for('index') }}" class="nav-link text-white py-2 px-4 rounded">Inicio</a>
+                    <a href="#reglas" class="nav-link text-white py-2 px-4 rounded">Reglas</a>
+                    <a href="#participantes" class="nav-link text-white py-2 px-4 rounded">Participantes</a>
+                    <a href="#torneo" class="nav-link text-white py-2 px-4 rounded">Estructura</a>
+                    <a href="#bracket" class="nav-link text-white py-2 px-4 rounded">Bracket</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="menu-toggle" class="text-white focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden w-full secondary-bg">
+            <div class="px-2 pt-2 pb-4 space-y-1">
+                <a href="{{ url_for('index') }}" class="block text-white py-2 px-4 rounded">Inicio</a>
+                <a href="#reglas" class="block text-white py-2 px-4 rounded">Reglas</a>
+                <a href="#participantes" class="block text-white py-2 px-4 rounded">Participantes</a>
+                <a href="#torneo" class="block text-white py-2 px-4 rounded">Estructura</a>
+                <a href="#bracket" class="block text-white py-2 px-4 rounded">Bracket</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="pt-32 pb-20 primary-bg">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-10 md:mb-0">
+                <h1 class="text-4xl md:text-6xl font-bold text-white leading-tight mb-4">Torneo Mortal Kombat</h1>
+                <h2 class="text-2xl md:text-3xl font-semibold secondary-text mb-6">¡Demuestra tu fatality en el torneo!</h2>
+                <p class="text-white text-lg mb-8">Únete a nuestro emocionante torneo de Mortal Kombat y compite para
+                    convertirte en el campeón indiscutible. El torneo cuenta con diferentes rondas de eliminación directa entre dos jugadores.</p>
+                <div class="flex flex-wrap gap-4">
+                    <a href="#reglas"
+                        class="secondary-bg text-white font-bold py-3 px-6 rounded-lg hover:opacity-90 transition duration-300">Ver
+                        Reglas</a>
+                    <a href="#bracket"
+                        class="bg-white text-gray-800 font-bold py-3 px-6 rounded-lg hover:bg-gray-100 transition duration-300">Ver Bracket</a>
+                </div>
+            </div>
+            <div class="md:w-1/2 flex justify-center">
+                <img src="{{ url_for('static', filename='images/mk_banner.webp') }}" alt="Mortal Kombat"
+                    class="rounded-lg shadow-2xl h-64 md:h-80 w-full object-cover">
+            </div>
+        </div>
+    </section>
+
+    <!-- Reglas Section -->
+    <section id="reglas" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold secondary-text mb-2">Reglas del Torneo</h2>
+                <div class="w-24 h-1 primary-bg mx-auto mb-6"></div>
+                <p class="text-gray-600 max-w-2xl mx-auto">Conoce todas las reglas que se aplicarán durante el torneo de Mortal Kombat.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-gray-50 rounded-lg shadow-md p-6 hover:shadow-xl transition duration-300 rule-card">
+                    <div class="text-3xl primary-text mb-4">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 secondary-text">Reglas Generales</h3>
+                    <ul class="text-gray-600 space-y-2">
+                        <li><span class="font-semibold">Personajes:</span> Todo el catálogo disponible</li>
+                        <li><span class="font-semibold">Baneos:</span> Cada jugador puede banear 1 personaje</li>
+                        <li><span class="font-semibold">Asistencia:</span> 60 segundos de tolerancia antes de descalificación</li>
+                        <li><span class="font-semibold">Fair Play:</span> No se permiten pausas innecesarias</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-50 rounded-lg shadow-md p-6 hover:shadow-xl transition duration-300 rule-card">
+                    <div class="text-3xl primary-text mb-4">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 secondary-text">Formato de Partidas</h3>
+                    <ul class="text-gray-600 space-y-2">
+                        <li><span class="font-semibold">Rondas:</span> 1 sola ronda</li>
+                        <li><span class="font-semibold">Tiempo:</span> 90 segundos por ronda</li>
+                        <li><span class="font-semibold">Dificultad:</span> Media</li>
+                        <li><span class="font-semibold">Vida:</span> 100%</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-50 rounded-lg shadow-md p-6 hover:shadow-xl transition duration-300 rule-card">
+                    <div class="text-3xl primary-text mb-4">
+                        <i class="fas fa-medal"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 secondary-text">Finales</h3>
+                    <ul class="text-gray-600 space-y-2">
+                        <li><span class="font-semibold">Semifinales:</span> Mejor de 3 rondas</li>
+                        <li><span class="font-semibold">Final:</span> Mejor de 5 rondas</li>
+                        <li><span class="font-semibold">Baneos:</span> 2 personajes por jugador</li>
+                        <li><span class="font-semibold">Fatality:</span> Opcional en la final</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Torneo Section -->
+    <section id="torneo" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold secondary-text mb-2">Estructura del Torneo</h2>
+                <div class="w-24 h-1 primary-bg mx-auto mb-6"></div>
+                <p class="text-gray-600 max-w-2xl mx-auto">Conoce cómo se desarrollará el torneo desde las rondas iniciales hasta la gran final.</p>
+            </div>
+
+            <div class="max-w-4xl mx-auto space-y-8">
+                <!-- Rondas Eliminatorias -->
+                <div class="bg-gray-50 rounded-lg shadow-md overflow-hidden round-card">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-3 secondary-text">Rondas Eliminatorias</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <ul class="text-gray-600 space-y-3">
+                                    <li><span class="font-semibold">Formato:</span> 1 vs 1</li>
+                                    <li><span class="font-semibold">Partidas:</span> Mejor de 3 rondas</li>
+                                    <li><span class="font-semibold">Baneos:</span> 1 personaje por jugador</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <ul class="text-gray-600 space-y-3">
+                                    <li><span class="font-semibold">Tiempo:</span> 90 segundos por ronda</li>
+                                    <li><span class="font-semibold">Escenario:</span> Aleatorio</li>
+                                    <li><span class="font-semibold">Simultáneas:</span> Hasta 2 partidas al mismo tiempo</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Semifinales -->
+                <div class="bg-gray-50 rounded-lg shadow-md overflow-hidden round-card">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-3 secondary-text">Semifinales</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <ul class="text-gray-600 space-y-3">
+                                    <li><span class="font-semibold">Formato:</span> 1 vs 1</li>
+                                    <li><span class="font-semibold">Partidas:</span> Mejor de 5 rondas</li>
+                                    <li><span class="font-semibold">Baneos:</span> 2 personajes por jugador</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <ul class="text-gray-600 space-y-3">
+                                    <li><span class="font-semibold">Tiempo:</span> 90 segundos por ronda</li>
+                                    <li><span class="font-semibold">Escenario:</span> Elección del jugador con ventaja</li>
+                                    <li><span class="font-semibold">Simultáneas:</span> 2 partidas al mismo tiempo</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Final -->
+                <div class="bg-gray-50 rounded-lg shadow-md overflow-hidden round-card">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-3 secondary-text">Gran Final</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <ul class="text-gray-600 space-y-3">
+                                    <li><span class="font-semibold">Formato:</span> 1 vs 1</li>
+                                    <li><span class="font-semibold">Partidas:</span> Mejor de 5 rondas</li>
+                                    <li><span class="font-semibold">Baneos:</span> 2 personajes por jugador</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <ul class="text-gray-600 space-y-3">
+                                    <li><span class="font-semibold">Fatality:</span> Permitida (opcional)</li>
+                                    <li><span class="font-semibold">Escenario:</span> Elección del jugador con ventaja</li>
+                                    <li><span class="font-semibold">Premio:</span> Trofeo y reconocimiento</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mt-4 p-4 bg-gray-100 rounded-lg">
+                            <p class="text-gray-600 italic">Nota: En caso de empate en la final, se jugará una ronda adicional con las mismas reglas para determinar al campeón.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<!-- Horarios Section -->
+<section id="horarios" class="py-20 bg-gray-100">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold secondary-text mb-2">Horarios del Torneo</h2>
+            <div class="w-24 h-1 primary-bg mx-auto mb-6"></div>
+            <p class="text-gray-600 max-w-2xl mx-auto">Consulta los horarios detallados para cada fase del torneo.</p>
+        </div>
+
+        <div class="max-w-4xl mx-auto space-y-8">
+            <!-- Lunes -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden round-card">
+                <div class="p-6">
+                    <h3 class="text-2xl font-bold mb-3 secondary-text">Lunes 12/05/2025</h3>
+                    
+                    <!-- Preliminar -->
+                    <div class="mb-6">
+                        <h4 class="text-xl font-semibold mb-3 text-gray-700">Preliminar</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <ul class="text-gray-600 space-y-3">
+                                    <li><span class="font-semibold">Partida 1 y 2:</span> 1:20 PM</li>
+                                    <li><span class="font-semibold">Partida 3 y 4:</span> 1:25 PM</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <ul class="text-gray-600 space-y-3">
+                                    <li><span class="font-semibold">Partida 5 y 6:</span> 1:30 PM</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Primera ronda -->
+                    <div>
+                        <h4 class="text-xl font-semibold mb-3 text-gray-700">Primera Ronda</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <h5 class="font-semibold text-gray-700 mb-2">Grupo 1</h5>
+                                <ul class="text-gray-600 space-y-3">
+                                    <li><span class="font-semibold">Combate 1 y 2:</span> 1:35 PM</li>
+                                    <li><span class="font-semibold">Combate 3 y 4:</span> 1:40 PM</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h5 class="font-semibold text-gray-700 mb-2">Grupo 2</h5>
+                                <ul class="text-gray-600 space-y-3">
+                                    <li><span class="font-semibold">Combate 1 y 2:</span> 1:45 PM</li>
+                                    <li><span class="font-semibold">Combate 3 y 4:</span> 1:50 PM</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Martes -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden round-card">
+                <div class="p-6">
+                    <h3 class="text-2xl font-bold mb-3 secondary-text">Martes 13/05/2025</h3>
+                    
+                    <!-- Continuación Primera Ronda -->
+                    <div class="mb-6">
+                        <h4 class="text-xl font-semibold mb-3 text-gray-700">Continuación Primera Ronda</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <h5 class="font-semibold text-gray-700 mb-2">Grupo 3</h5>
+                                <ul class="text-gray-600 space-y-3">
+                                    <li><span class="font-semibold">Combate 1 y 2:</span> 8:20 AM</li>
+                                    <li><span class="font-semibold">Combate 3 y 4:</span> 8:25 AM</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h5 class="font-semibold text-gray-700 mb-2">Grupo 4</h5>
+                                <ul class="text-gray-600 space-y-3">
+                                    <li><span class="font-semibold">Combate 1 y 2:</span> 8:30 AM</li>
+                                    <li><span class="font-semibold">Combate 3 y 4:</span> 8:35 AM</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Segunda Ronda -->
+                    <div class="mb-6">
+                        <h4 class="text-xl font-semibold mb-3 text-gray-700">Segunda Ronda</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <h5 class="font-semibold text-gray-700 mb-2">Grupo 1</h5>
+                                <ul class="text-gray-600 space-y-3">
+                                    <li><span class="font-semibold">Combate 1 y 2:</span> 8:40 AM</li>
+                                    <li><span class="font-semibold">Combate 3 y 4:</span> 8:45 AM</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h5 class="font-semibold text-gray-700 mb-2">Grupo 2</h5>
+                                <ul class="text-gray-600 space-y-3">
+                                    <li><span class="font-semibold">Combate 1 y 2:</span> 8:50 AM</li>
+                                    <li><span class="font-semibold">Combate 3 y 4:</span> 8:55 AM</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Cuartos de Final -->
+                    <div>
+                        <h4 class="text-xl font-semibold mb-3 text-gray-700">Cuartos de Final</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <h5 class="font-semibold text-gray-700 mb-2">Grupo 1</h5>
+                                <ul class="text-gray-600 space-y-3">
+                                    <li><span class="font-semibold">Combate 1 y 2:</span> 1:20 PM</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h5 class="font-semibold text-gray-700 mb-2">Grupo 2</h5>
+                                <ul class="text-gray-600 space-y-3">
+                                    <li><span class="font-semibold">Combate 1 y 2:</span> 1:35 PM</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Miércoles -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden round-card">
+                <div class="p-6">
+                    <h3 class="text-2xl font-bold mb-3 secondary-text">Miércoles 14/05/2025</h3>
+                    
+                    <!-- Semifinales -->
+                    <div class="mb-6">
+                        <h4 class="text-xl font-semibold mb-3 text-gray-700">Semifinales</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <ul class="text-gray-600 space-y-3">
+                                    <li><span class="font-semibold">Semifinal 1:</span> 8:20 AM</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <ul class="text-gray-600 space-y-3">
+                                    <li><span class="font-semibold">Semifinal 2:</span> 8:35 AM</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Final -->
+                    <div>
+                        <h4 class="text-xl font-semibold mb-3 text-gray-700">Final</h4>
+                        <div class="grid grid-cols-1 gap-6">
+                            <div class="mx-auto">
+                                <ul class="text-gray-600 space-y-3">
+                                    <li><span class="font-semibold">Final:</span> 1:20 PM</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 p-4 bg-gray-100 rounded-lg">
+                        <p class="text-gray-600 italic">Nota: Se recomienda a todos los participantes estar presentes al menos 5 minutos antes de la hora programada para su grupo o combate.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Bracket Section -->
+<section id="bracket" class="py-20 bg-gray-100">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold secondary-text mb-2">Bracket del Torneo</h2>
+            <div class="w-24 h-1 primary-bg mx-auto mb-6"></div>
+            <p class="text-gray-600 max-w-2xl mx-auto">Sigue el progreso de los 38 participantes a través de las diferentes rondas del torneo.</p>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-xl p-6 overflow-x-auto">
+            <h3 class="text-2xl font-bold mb-6 text-center secondary-text">Eliminatorias</h3>
+            
+            <!-- Ronda Preliminar (6 partidas para reducir de 38 a 32 competidores) -->
+            <div class="mb-10">
+                <h4 class="text-xl font-semibold mb-4 primary-text">Ronda Preliminar</h4>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Partida P1 -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h5 class="font-medium mb-2">Partida P1</h5>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center p-2 bg-gray-100 rounded">
+                                <span>Samuel Pérez</span>
+                                <span class="font-bold">VS</span>
+                                <span>Wensy Castillo</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Partida P2 -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h5 class="font-medium mb-2">Partida P2</h5>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center p-2 bg-gray-100 rounded">
+                                <span>Julissa Carrillo</span>
+                                <span class="font-bold">VS</span>
+                                <span>Samuel Calderón</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Partida P3 -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h5 class="font-medium mb-2">Partida P3</h5>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center p-2 bg-gray-100 rounded">
+                                <span>Randy Cruz</span>
+                                <span class="font-bold">VS</span>
+                                <span>Cesar Medina</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Partida P4 -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h5 class="font-medium mb-2">Partida P4</h5>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center p-2 bg-gray-100 rounded">
+                                <span>Gleyner Alemán</span>
+                                <span class="font-bold">VS</span>
+                                <span>Jefferson Naranjo</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Partida P5 -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h5 class="font-medium mb-2">Partida P5</h5>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center p-2 bg-gray-100 rounded">
+                                <span>Moisés Martinez</span>
+                                <span class="font-bold">VS</span>
+                                <span>Esteban García</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Partida P6 -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h5 class="font-medium mb-2">Partida P6</h5>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center p-2 bg-gray-100 rounded">
+                                <span>Rachel Vazquez</span>
+                                <span class="font-bold">VS</span>
+                                <span>Sebastián Aguirres</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Primera Ronda (16 partidas, 32 competidores) -->
+            <div class="mb-10">
+                <h4 class="text-xl font-semibold mb-4 primary-text">Primera Ronda</h4>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <!-- Grupo 1 -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h5 class="font-medium mb-2">Grupo 1</h5>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center p-2 bg-gray-100 rounded">
+                                <span>Elkin García</span>
+                                <span class="font-bold">VS</span>
+                                <span>Jakel Brenes</span>
+                            </div>
+                            <div class="flex justify-between items-center p-2 bg-gray-100 rounded">
+                                <span>Luis Alberto</span>
+                                <span class="font-bold">VS</span>
+                                <span>Gerald</span>
+                            </div>
+                            <div class="flex justify-between items-center p-2 bg-gray-100 rounded">
+                                <span>Ian Chavarría</span>
+                                <span class="font-bold">VS</span>
+                                <span>Rachel Odette</span>
+                            </div>
+                            <div class="flex justify-between items-center p-2 bg-gray-100 rounded">
+                                <span>Juan David Mora</span>
+                                <span class="font-bold">VS</span>
+                                <span>Mattias Zeledón</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Grupo 2 -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h5 class="font-medium mb-2">Grupo 2</h5>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center p-2 bg-gray-100 rounded">
+                                <span>Diego Esquivel</span>
+                                <span class="font-bold">VS</span>
+                                <span>Christopher Mendoza</span>
+                            </div>
+                            <div class="flex justify-between items-center p-2 bg-gray-100 rounded">
+                                <span>Simón Azofifa</span>
+                                <span class="font-bold">VS</span>
+                                <span>Andrés Fonseca</span>
+                            </div>
+                            <div class="flex justify-between items-center p-2 bg-gray-100 rounded">
+                                <span>Keylor Nuñez</span>
+                                <span class="font-bold">VS</span>
+                                <span>Ibrahim Arguello</span>
+                            </div>
+                            <div class="flex justify-between items-center p-2 bg-gray-100 rounded">
+                                <span>Kevin Nicaragua</span>
+                                <span class="font-bold">VS</span>
+                                <span>Gabriel Obando</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Grupo 3 -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h5 class="font-medium mb-2">Grupo 3</h5>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center p-2 bg-gray-100 rounded">
+                                <span>Sebastián Moreno</span>
+                                <span class="font-bold">VS</span>
+                                <span>Bradley Abarca</span>
+                            </div>
+                            <div class="flex justify-between items-center p-2 bg-gray-100 rounded">
+                                <span>Alexander López</span>
+                                <span class="font-bold">VS</span>
+                                <span>Nelson Báez</span>
+                            </div>
+                            <div class="flex justify-between items-center p-2 bg-gray-100 rounded">
+                                <span>Brandon Smith</span>
+                                <span class="font-bold">VS</span>
+                                <span>Jeancarlo Hernández</span>
+                            </div>
+                            <div class="flex justify-between items-center p-2 bg-gray-100 rounded">
+                                <span>Elkin Gutiérrez</span>
+                                <span class="font-bold">VS</span>
+                                <span>Kenyet Arce</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Grupo 4 -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h5 class="font-medium mb-2">Grupo 4</h5>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center p-2 bg-gray-100 rounded">
+                                <span>María José Valledares</span>
+                                <span class="font-bold">VS</span>
+                                <span>Tiffany Vargas</span>
+                            </div>
+                            <div class="flex justify-between items-center p-2 bg-gray-100 rounded">
+                                <span>Ganador P1</span>
+                                <span class="font-bold">VS</span>
+                                <span>Ganador P2</span>
+                            </div>
+                            <div class="flex justify-between items-center p-2 bg-gray-100 rounded">
+                                <span>Ganador P3</span>
+                                <span class="font-bold">VS</span>
+                                <span>Ganador P4</span>
+                            </div>
+                            <div class="flex justify-between items-center p-2 bg-gray-100 rounded">
+                                <span>Ganador P5</span>
+                                <span class="font-bold">VS</span>
+                                <span>Ganador P6</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Segunda Ronda (8 partidas, 16 competidores) -->
+            <div class="mb-10">
+                <h4 class="text-xl font-semibold mb-4 primary-text">Segunda Ronda</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Grupo 1 -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h5 class="font-medium mb-2">Grupo 1</h5>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center p-2 bg-gray-100 rounded">
+                                <span>Ganador G1-1</span>
+                                <span class="font-bold">VS</span>
+                                <span>Ganador G1-2</span>
+                            </div>
+                            <div class="flex justify-between items-center p-2 bg-gray-100 rounded">
+                                <span>Ganador G1-3</span>
+                                <span class="font-bold">VS</span>
+                                <span>Ganador G1-4</span>
+                            </div>
+                            <div class="flex justify-between items-center p-2 bg-gray-100 rounded">
+                                <span>Ganador G2-1</span>
+                                <span class="font-bold">VS</span>
+                                <span>Ganador G2-2</span>
+                            </div>
+                            <div class="flex justify-between items-center p-2 bg-gray-100 rounded">
+                                <span>Ganador G2-3</span>
+                                <span class="font-bold">VS</span>
+                                <span>Ganador G2-4</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Grupo 2 -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h5 class="font-medium mb-2">Grupo 2</h5>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center p-2 bg-gray-100 rounded">
+                                <span>Ganador G3-1</span>
+                                <span class="font-bold">VS</span>
+                                <span>Ganador G3-2</span>
+                            </div>
+                            <div class="flex justify-between items-center p-2 bg-gray-100 rounded">
+                                <span>Ganador G3-3</span>
+                                <span class="font-bold">VS</span>
+                                <span>Ganador G3-4</span>
+                            </div>
+                            <div class="flex justify-between items-center p-2 bg-gray-100 rounded">
+                                <span>Ganador G4-1</span>
+                                <span class="font-bold">VS</span>
+                                <span>Ganador G4-2</span>
+                            </div>
+                            <div class="flex justify-between items-center p-2 bg-gray-100 rounded">
+                                <span>Ganador G4-3</span>
+                                <span class="font-bold">VS</span>
+                                <span>Ganador G4-4</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Cuartos de Final (4 partidas, 8 competidores) -->
+            <div class="mb-10">
+                <h4 class="text-xl font-semibold mb-4 primary-text">Cuartos de Final</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Grupo 1 -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="space-y-2">
+                            <h5 class="font-medium mb-2">Grupo 1</h5>
+                            <div class="flex justify-between items-center p-2 bg-gray-100 rounded">
+                                <span>Ganador R2-G1-1</span>
+                                <span class="font-bold">VS</span>
+                                <span>Ganador R2-G1-2</span>
+                            </div>
+                            <div class="flex justify-between items-center p-2 bg-gray-100 rounded">
+                                <span>Ganador R2-G1-3</span>
+                                <span class="font-bold">VS</span>
+                                <span>Ganador R2-G1-4</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Grupo 2 -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="space-y-2">
+                            <h5 class="font-medium mb-2">Grupo 2</h5>
+                            <div class="flex justify-between items-center p-2 bg-gray-100 rounded">
+                                <span>Ganador R2-G2-1</span>
+                                <span class="font-bold">VS</span>
+                                <span>Ganador R2-G2-2</span>
+                            </div>
+                            <div class="flex justify-between items-center p-2 bg-gray-100 rounded">
+                                <span>Ganador R2-G2-3</span>
+                                <span class="font-bold">VS</span>
+                                <span>Ganador R2-G2-4</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Semifinales (2 partidas, 4 competidores) -->
+            <div class="mb-10">
+                <h4 class="text-xl font-semibold mb-4 primary-text">Semifinales</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Semifinal 1 -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h5 class="font-medium mb-2">Semifinal 1</h5>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center p-2 bg-gray-100 rounded">
+                                <span>Ganador CF-G1-1</span>
+                                <span class="font-bold">VS</span>
+                                <span>Ganador CF-G1-2</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Semifinal 2 -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h5 class="font-medium mb-2">Semifinal 2</h5>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center p-2 bg-gray-100 rounded">
+                                <span>Ganador CF-G2-1</span>
+                                <span class="font-bold">VS</span>
+                                <span>Ganador CF-G2-2</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Final -->
+            <div>
+                <h4 class="text-xl font-semibold mb-4 primary-text">Gran Final</h4>
+                <div class="max-w-md mx-auto">
+                    <div class="border-2 border-primary-bg rounded-lg p-6 bg-white shadow-lg">
+                        <div class="flex justify-between items-center p-4 bg-gray-100 rounded">
+                            <span>Ganador SF1</span>
+                            <span class="font-bold text-xl">VS</span>
+                            <span>Ganador SF2</span>
+                        </div>
+                        <div class="mt-4 text-center">
+                            <i class="fas fa-trophy text-yellow-500 text-4xl"></i>
+                            <p class="mt-2 font-semibold">¡El campeón se decidirá aquí!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- Footer -->
+    <footer class="secondary-bg text-white py-10">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+                <div class="flex items-center mb-6 md:mb-0">
+                    <img src="https://via.placeholder.com/64" alt="Mascota Mortal Kombat" class="h-12 mascot">
+
+                    <div class="ml-3">
+                        <h3 class="text-xl font-bold primary-text">USE</h3>
+                        <p class="text-sm">Unión Social Estudiantil</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="{{ url_for('index') }}" class="text-white hover:primary-text transition duration-300">Inicio</a>
+                    <a href="#reglas" class="text-white hover:primary-text transition duration-300">Reglas</a>
+                    <a href="#participantes" class="text-white hover:primary-text transition duration-300">Participantes</a>
+                    <a href="#torneo" class="text-white hover:primary-text transition duration-300">Estructura</a>
+                    <a href="#bracket" class="text-white hover:primary-text transition duration-300">Bracket</a>
+                </div>
+
+                <div class="flex gap-4 mt-6 md:mt-0">
+                    <a href="#" class="text-white hover:primary-text transition duration-300 text-xl">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-700 pt-6 text-center">
+                <p>&copy; 2025 Unión Social Estudiantil - USE. Todos los derechos reservados.</p>
+                <p class="mt-2 text-sm text-gray-400">Creado con 💙 por el equipo de USE para todos los estudiantes.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
