@@ -901,21 +901,69 @@
     </footer>
 
     <script>
-        // Mobile menu toggle
-        document.getElementById('menu-toggle').addEventListener('click', function() {
-            document.getElementById('mobile-menu').classList.toggle('hidden');
+document.addEventListener('DOMContentLoaded', function() {
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    // Add transition styles to mobile menu for smooth animation
+    mobileMenu.style.transition = 'all 0.3s ease-in-out';
+    mobileMenu.style.opacity = '0';
+    mobileMenu.style.maxHeight = '0';
+    mobileMenu.style.overflow = 'hidden';
+    
+    // Toggle mobile menu with animation when hamburger button is clicked
+    menuToggle.addEventListener('click', function() {
+        if (mobileMenu.classList.contains('hidden')) {
+            // Show menu with animation
+            mobileMenu.classList.remove('hidden');
+            setTimeout(() => {
+                mobileMenu.style.opacity = '1';
+                mobileMenu.style.maxHeight = '300px'; // Adjust based on your menu height
+            }, 10);
+        } else {
+            // Hide menu with animation
+            mobileMenu.style.opacity = '0';
+            mobileMenu.style.maxHeight = '0';
+            setTimeout(() => {
+                mobileMenu.classList.add('hidden');
+            }, 300); // Match transition duration
+        }
+    });
+    
+    // Hide mobile menu when clicking on a link
+    const mobileLinks = mobileMenu.querySelectorAll('a');
+    mobileLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            mobileMenu.style.opacity = '0';
+            mobileMenu.style.maxHeight = '0';
+            setTimeout(() => {
+                mobileMenu.classList.add('hidden');
+            }, 300);
         });
-
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
+    });
+    
+    // Hide mobile menu when clicking outside
+    document.addEventListener('click', function(event) {
+        if (!menuToggle.contains(event.target) && !mobileMenu.contains(event.target) && !mobileMenu.classList.contains('hidden')) {
+            mobileMenu.style.opacity = '0';
+            mobileMenu.style.maxHeight = '0';
+            setTimeout(() => {
+                mobileMenu.classList.add('hidden');
+            }, 300);
+        }
+    });
+    
+    // Close menu when window is resized to desktop size
+    window.addEventListener('resize', function() {
+        if (window.innerWidth >= 768) { // 768px is the md breakpoint in Tailwind
+            mobileMenu.style.opacity = '0';
+            mobileMenu.style.maxHeight = '0';
+            setTimeout(() => {
+                mobileMenu.classList.add('hidden');
+            }, 300);
+        }
+    });
+});
     </script>
-</body>
 
 </html>

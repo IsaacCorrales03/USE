@@ -138,7 +138,7 @@
         <div class="container mx-auto px-4 py-2">
             <div class="flex justify-between items-center">
                 <div class="flex items-center">
-                   <img src="{{ url_for('static', filename='images/mascota_3.png') }}"class="h-16 mascot">
+                    <img src="{{ url_for('static', filename='images/mascota_3.png') }}" class="h-16 mascot">
 
                     <div class="ml-3">
                         <h1 class="text-3xl font-bold primary-text">USE</h1>
@@ -197,7 +197,7 @@
             </div>
             <div class="md:w-1/2 flex justify-center">
                 <img src="{{ url_for('static', filename='images/bandera.jpg') }}" alt="Mascota: Hurón de las Nieves"
-     class="rounded-full shadow-2xl mascot h-64 md:h-80">
+                    class="rounded-full shadow-2xl mascot h-64 md:h-80">
 
             </div>
         </div>
@@ -706,7 +706,8 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                 <a href="{{ url_for('torneo_smash') }}" class="tournament-card">
-                    <img src="{{ url_for('static', filename='images/smash_banner.webp') }}" alt="Super Smash Bros" class="w-full h-full object-cover">
+                    <img src="{{ url_for('static', filename='images/smash_banner.webp') }}" alt="Super Smash Bros"
+                        class="w-full h-full object-cover">
 
                     <div class="tournament-overlay">
                         <h3 class="text-2xl font-bold mb-2">Torneo Super Smash Bros</h3>
@@ -715,7 +716,8 @@
                 </a>
 
                 <a href="{{ url_for('torneo_mk') }}" class="tournament-card">
-                    <img src="{{ url_for('static', filename='images/mk_banner.webp') }}" alt="Mortal Kombat" class="w-full h-full object-cover">
+                    <img src="{{ url_for('static', filename='images/mk_banner.webp') }}" alt="Mortal Kombat"
+                        class="w-full h-full object-cover">
 
                     <div class="tournament-overlay">
                         <h3 class="text-2xl font-bold mb-2">Torneo Mortal Kombat</h3>
@@ -731,7 +733,8 @@
         <div class="container mx-auto px-4">
             <div class="flex flex-col md:flex-row justify-between items-center mb-8">
                 <div class="flex items-center mb-6 md:mb-0">
-                    <img src="{{ url_for('static', filename='images/mascota_3.png') }}" alt="Mascota Hurón de las Nieves" class="h-12 mascot">
+                    <img src="{{ url_for('static', filename='images/mascota_3.png') }}"
+                        alt="Mascota Hurón de las Nieves" class="h-12 mascot">
 
                     <div class="ml-3">
                         <h3 class="text-xl font-bold primary-text">USE</h3>
@@ -769,3 +772,71 @@
             </div>
         </div>
     </footer>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    // Add transition styles to mobile menu for smooth animation
+    mobileMenu.style.transition = 'all 0.3s ease-in-out';
+    mobileMenu.style.opacity = '0';
+    mobileMenu.style.maxHeight = '0';
+    mobileMenu.style.overflow = 'hidden';
+    
+    // Toggle mobile menu with animation when hamburger button is clicked
+    menuToggle.addEventListener('click', function() {
+        if (mobileMenu.classList.contains('hidden')) {
+            // Show menu with animation
+            mobileMenu.classList.remove('hidden');
+            setTimeout(() => {
+                mobileMenu.style.opacity = '1';
+                mobileMenu.style.maxHeight = '300px'; // Adjust based on your menu height
+            }, 10);
+        } else {
+            // Hide menu with animation
+            mobileMenu.style.opacity = '0';
+            mobileMenu.style.maxHeight = '0';
+            setTimeout(() => {
+                mobileMenu.classList.add('hidden');
+            }, 300); // Match transition duration
+        }
+    });
+    
+    // Hide mobile menu when clicking on a link
+    const mobileLinks = mobileMenu.querySelectorAll('a');
+    mobileLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            mobileMenu.style.opacity = '0';
+            mobileMenu.style.maxHeight = '0';
+            setTimeout(() => {
+                mobileMenu.classList.add('hidden');
+            }, 300);
+        });
+    });
+    
+    // Hide mobile menu when clicking outside
+    document.addEventListener('click', function(event) {
+        if (!menuToggle.contains(event.target) && !mobileMenu.contains(event.target) && !mobileMenu.classList.contains('hidden')) {
+            mobileMenu.style.opacity = '0';
+            mobileMenu.style.maxHeight = '0';
+            setTimeout(() => {
+                mobileMenu.classList.add('hidden');
+            }, 300);
+        }
+    });
+    
+    // Close menu when window is resized to desktop size
+    window.addEventListener('resize', function() {
+        if (window.innerWidth >= 768) { // 768px is the md breakpoint in Tailwind
+            mobileMenu.style.opacity = '0';
+            mobileMenu.style.maxHeight = '0';
+            setTimeout(() => {
+                mobileMenu.classList.add('hidden');
+            }, 300);
+        }
+    });
+});
+    </script>
+</body>
+
+</html>
