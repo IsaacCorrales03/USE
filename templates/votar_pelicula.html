@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Votá tu Película – USE</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap"
+        rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         :root {
@@ -24,8 +27,17 @@
             --danger-light: #fdf0f0;
         }
 
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html { scroll-behavior: smooth; }
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
@@ -37,12 +49,15 @@
         /* ── NAV ─────────────────────────────────── */
         #navbar {
             position: fixed;
-            top: 0; left: 0; right: 0;
+            top: 0;
+            left: 0;
+            right: 0;
             z-index: 100;
             background: rgba(244, 243, 241, 0.92);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
         }
+
         .nav-inner {
             max-width: 1200px;
             margin: 0 auto;
@@ -52,25 +67,43 @@
             align-items: center;
             justify-content: space-between;
         }
+
         .nav-brand {
-            display: flex; align-items: center; gap: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             text-decoration: none;
         }
-        .nav-brand img { height: 34px; }
-        .nav-brand-name {
-            font-size: 1.25rem; font-weight: 700;
-            color: var(--text); letter-spacing: -0.02em;
+
+        .nav-brand img {
+            height: 34px;
         }
+
+        .nav-brand-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.02em;
+        }
+
         .nav-back {
-            display: inline-flex; align-items: center; gap: 7px;
-            font-size: 0.82rem; font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 0.82rem;
+            font-weight: 500;
             color: var(--stone-light);
             text-decoration: none;
-            padding: 7px 14px; border-radius: 8px;
+            padding: 7px 14px;
+            border-radius: 8px;
             border: 1px solid var(--border);
             transition: color 0.2s, background 0.2s;
         }
-        .nav-back:hover { color: var(--text); background: var(--bg-2); }
+
+        .nav-back:hover {
+            color: var(--text);
+            background: var(--bg-2);
+        }
 
         /* ── HERO STRIP ──────────────────────────── */
         .event-hero {
@@ -78,21 +111,33 @@
             background: var(--white);
             border-bottom: 1px solid var(--border);
         }
+
         .event-hero-inner {
             max-width: 1200px;
             margin: 0 auto;
             padding: 3.5rem 2rem 3rem;
         }
+
         .event-tag {
-            display: inline-flex; align-items: center; gap: 7px;
-            font-size: 0.68rem; font-weight: 600;
-            letter-spacing: 0.14em; text-transform: uppercase;
-            color: var(--cyan); margin-bottom: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--cyan);
+            margin-bottom: 1rem;
         }
+
         .event-tag::before {
-            content: ''; width: 14px; height: 2px;
-            background: var(--cyan); border-radius: 2px;
+            content: '';
+            width: 14px;
+            height: 2px;
+            background: var(--cyan);
+            border-radius: 2px;
         }
+
         .event-hero-inner h1 {
             font-size: clamp(2rem, 4vw, 3rem);
             font-weight: 700;
@@ -100,12 +145,19 @@
             line-height: 1.1;
             margin-bottom: 0.7rem;
         }
+
         .event-hero-inner h1 em {
-            font-style: italic; font-weight: 400; color: var(--cyan);
+            font-style: italic;
+            font-weight: 400;
+            color: var(--cyan);
         }
+
         .event-hero-inner p {
-            font-size: 0.95rem; color: var(--stone-light);
-            max-width: 520px; line-height: 1.8; font-weight: 300;
+            font-size: 0.95rem;
+            color: var(--stone-light);
+            max-width: 520px;
+            line-height: 1.8;
+            font-weight: 300;
         }
 
         /* ── MAIN LAYOUT ─────────────────────────── */
@@ -118,32 +170,47 @@
             gap: 2rem;
             align-items: start;
         }
+
         @media (max-width: 860px) {
-            .main { grid-template-columns: 1fr; }
+            .main {
+                grid-template-columns: 1fr;
+            }
         }
 
         /* ── SECTION LABEL ───────────────────────── */
         .section-label {
-            font-size: 0.68rem; font-weight: 600;
-            letter-spacing: 0.14em; text-transform: uppercase;
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
             color: var(--cyan);
-            display: flex; align-items: center; gap: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
             margin-bottom: 1.2rem;
         }
+
         .section-label::before {
-            content: ''; width: 12px; height: 2px;
-            background: var(--cyan); border-radius: 2px;
+            content: '';
+            width: 12px;
+            height: 2px;
+            background: var(--cyan);
+            border-radius: 2px;
         }
 
         /* ── PELÍCULAS GRID ──────────────────────── */
         .peliculas-header {
-            display: flex; align-items: center;
+            display: flex;
+            align-items: center;
             justify-content: space-between;
             margin-bottom: 1.2rem;
-            flex-wrap: wrap; gap: 0.8rem;
+            flex-wrap: wrap;
+            gap: 0.8rem;
         }
+
         .peliculas-count {
-            font-size: 0.82rem; color: var(--stone-lighter);
+            font-size: 0.82rem;
+            color: var(--stone-lighter);
             font-weight: 400;
         }
 
@@ -163,10 +230,12 @@
             gap: 1.2rem;
             transition: border-color 0.2s, box-shadow 0.2s;
         }
+
         .pelicula-card:hover {
             border-color: var(--cyan-mid);
-            box-shadow: 0 4px 20px rgba(46,196,196,0.08);
+            box-shadow: 0 4px 20px rgba(46, 196, 196, 0.08);
         }
+
         .pelicula-card.voted {
             border-color: var(--cyan-mid);
             background: #f4fbfb;
@@ -174,35 +243,58 @@
 
         /* Rank badge */
         .pelicula-rank {
-            font-size: 0.72rem; font-weight: 700;
+            font-size: 0.72rem;
+            font-weight: 700;
             color: var(--stone-lighter);
             min-width: 24px;
             text-align: center;
             letter-spacing: -0.01em;
         }
-        .pelicula-rank.top { color: var(--cyan); }
+
+        .pelicula-rank.top {
+            color: var(--cyan);
+        }
 
         /* Info */
-        .pelicula-info { flex: 1; min-width: 0; }
+        .pelicula-info {
+            flex: 1;
+            min-width: 0;
+        }
+
         .pelicula-titulo {
-            font-size: 0.98rem; font-weight: 600;
-            color: var(--text); letter-spacing: -0.01em;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            font-size: 0.98rem;
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: -0.01em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
+
         .pelicula-meta {
-            font-size: 0.76rem; color: var(--stone-lighter);
-            margin-top: 2px; font-weight: 300;
+            font-size: 0.76rem;
+            color: var(--stone-lighter);
+            margin-top: 2px;
+            font-weight: 300;
         }
+
         .pelicula-desc {
-            font-size: 0.8rem; color: var(--stone-light);
-            margin-top: 4px; line-height: 1.55; font-weight: 300;
+            font-size: 0.8rem;
+            color: var(--stone-light);
+            margin-top: 4px;
+            line-height: 1.55;
+            font-weight: 300;
         }
 
         /* Vote button */
         .btn-vote {
-            display: inline-flex; align-items: center; gap: 6px;
-            padding: 8px 14px; border-radius: 999px;
-            font-size: 0.8rem; font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 600;
             border: 1.5px solid var(--border);
             background: var(--bg);
             color: var(--stone-light);
@@ -211,20 +303,24 @@
             white-space: nowrap;
             flex-shrink: 0;
         }
+
         .btn-vote:hover {
             border-color: var(--cyan);
             color: var(--cyan);
             background: var(--cyan-light);
         }
+
         .btn-vote.active {
             border-color: var(--cyan);
             background: var(--cyan);
             color: var(--white);
         }
+
         .btn-vote.active:hover {
             background: var(--bg);
             color: var(--cyan);
         }
+
         .btn-vote .vote-count {
             font-weight: 700;
             min-width: 14px;
@@ -240,11 +336,24 @@
             border-radius: 14px;
             color: var(--stone-lighter);
         }
-        .empty-state i { font-size: 2.2rem; opacity: 0.4; margin-bottom: 1rem; display: block; }
-        .empty-state p { font-size: 0.88rem; }
+
+        .empty-state i {
+            font-size: 2.2rem;
+            opacity: 0.4;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .empty-state p {
+            font-size: 0.88rem;
+        }
 
         /* ── SIDEBAR ─────────────────────────────── */
-        .sidebar { display: flex; flex-direction: column; gap: 1.2rem; }
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
 
         /* Add movie card */
         .add-card {
@@ -253,20 +362,28 @@
             border-radius: 14px;
             padding: 1.5rem;
         }
+
         .add-card h3 {
-            font-size: 0.98rem; font-weight: 600;
+            font-size: 0.98rem;
+            font-weight: 600;
             letter-spacing: -0.01em;
             margin-bottom: 1.1rem;
         }
 
-        .form-group { margin-bottom: 0.9rem; }
+        .form-group {
+            margin-bottom: 0.9rem;
+        }
+
         .form-group label {
             display: block;
-            font-size: 0.72rem; font-weight: 600;
-            letter-spacing: 0.06em; text-transform: uppercase;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
             color: var(--stone-light);
             margin-bottom: 0.4rem;
         }
+
         .form-group input,
         .form-group textarea {
             width: 100%;
@@ -281,12 +398,16 @@
             resize: none;
             transition: border-color 0.2s, box-shadow 0.2s;
         }
+
         .form-group input:focus,
         .form-group textarea:focus {
             border-color: var(--cyan);
-            box-shadow: 0 0 0 3px rgba(46,196,196,0.12);
+            box-shadow: 0 0 0 3px rgba(46, 196, 196, 0.12);
         }
-        .form-group textarea { height: 76px; }
+
+        .form-group textarea {
+            height: 76px;
+        }
 
         .btn-submit {
             width: 100%;
@@ -296,13 +417,24 @@
             border-radius: 999px;
             padding: 11px 20px;
             font-family: inherit;
-            font-size: 0.88rem; font-weight: 600;
+            font-size: 0.88rem;
+            font-weight: 600;
             cursor: pointer;
             transition: opacity 0.2s;
-            display: flex; align-items: center; justify-content: center; gap: 7px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
         }
-        .btn-submit:hover { opacity: 0.85; }
-        .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .btn-submit:hover {
+            opacity: 0.85;
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
 
         /* Stats card */
         .stats-card {
@@ -311,103 +443,155 @@
             border-radius: 14px;
             padding: 1.4rem;
         }
+
         .stats-card h3 {
-            font-size: 0.95rem; font-weight: 600;
-            letter-spacing: -0.01em; margin-bottom: 1rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            margin-bottom: 1rem;
         }
-        .stats-list { display: flex; flex-direction: column; gap: 0.6rem; }
+
+        .stats-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
         .stats-item {
-            display: flex; align-items: center; gap: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
+
         .stats-bar-wrap {
-            flex: 1; height: 6px;
-            background: var(--border); border-radius: 99px; overflow: hidden;
+            flex: 1;
+            height: 6px;
+            background: var(--border);
+            border-radius: 99px;
+            overflow: hidden;
         }
+
         .stats-bar {
-            height: 100%; background: var(--cyan); border-radius: 99px;
+            height: 100%;
+            background: var(--cyan);
+            border-radius: 99px;
             transition: width 0.4s ease;
         }
+
         .stats-label {
-            font-size: 0.76rem; color: var(--stone-light); font-weight: 300;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            font-size: 0.76rem;
+            color: var(--stone-light);
+            font-weight: 300;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
             max-width: 110px;
         }
+
         .stats-num {
-            font-size: 0.76rem; font-weight: 700; color: var(--cyan);
-            min-width: 20px; text-align: right;
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: var(--cyan);
+            min-width: 20px;
+            text-align: right;
         }
 
         /* toast */
         #toast {
             position: fixed;
-            bottom: 2rem; left: 50%;
+            bottom: 2rem;
+            left: 50%;
             transform: translateX(-50%) translateY(20px);
             background: var(--text);
             color: var(--bg);
             padding: 10px 22px;
             border-radius: 999px;
-            font-size: 0.84rem; font-weight: 500;
+            font-size: 0.84rem;
+            font-weight: 500;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.25s, transform 0.25s;
             z-index: 999;
             white-space: nowrap;
         }
+
         #toast.show {
             opacity: 1;
             transform: translateX(-50%) translateY(0);
         }
-        #toast.cyan { background: var(--cyan); }
+
+        #toast.cyan {
+            background: var(--cyan);
+        }
 
         /* reveal */
-        .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.45s ease, transform 0.45s ease; }
-        .reveal.show { opacity: 1; transform: none; }
-        .d1 { transition-delay: 0.04s; }
-        .d2 { transition-delay: 0.09s; }
-        .d3 { transition-delay: 0.14s; }
+        .reveal {
+            opacity: 0;
+            transform: translateY(14px);
+            transition: opacity 0.45s ease, transform 0.45s ease;
+        }
+
+        .reveal.show {
+            opacity: 1;
+            transform: none;
+        }
+
+        .d1 {
+            transition-delay: 0.04s;
+        }
+
+        .d2 {
+            transition-delay: 0.09s;
+        }
+
+        .d3 {
+            transition-delay: 0.14s;
+        }
     </style>
 </head>
+
 <body>
 
-<!-- NAV -->
-<nav id="navbar">
-    <div class="nav-inner">
-        <a href="{{ url_for('index') }}" class="nav-brand">
-            <img src="{{ url_for('static', filename='images/mascota_3.png') }}" alt="USE">
-            <div class="nav-brand-name">USE</div>
-        </a>
-        <a href="{{ url_for('index') }}#eventos" class="nav-back">
-            <i class="fas fa-arrow-left"></i> Volver a eventos
-        </a>
-    </div>
-</nav>
-
-<!-- HERO -->
-<div class="event-hero">
-    <div class="event-hero-inner">
-        <div class="event-tag">Evento activo</div>
-        <h1>Votá tu <em>película</em></h1>
-        <p>Proponé una película y votá por tu favorita. La más votada será la que veamos juntos. ¡Cada like cuenta!</p>
-    </div>
-</div>
-
-<!-- MAIN -->
-<div class="main">
-
-    <!-- ── LISTA DE PELÍCULAS ── -->
-    <div>
-        <div class="peliculas-header">
-            <div class="section-label">Películas propuestas</div>
-            <span class="peliculas-count" id="count-label">
-                {{ peliculas|length }} película{{ 's' if peliculas|length != 1 else '' }}
-            </span>
+    <!-- NAV -->
+    <nav id="navbar">
+        <div class="nav-inner">
+            <a href="{{ url_for('index') }}" class="nav-brand">
+                <img src="{{ url_for('static', filename='images/mascota_3.png') }}" alt="USE">
+                <div class="nav-brand-name">USE</div>
+            </a>
+            <a href="{{ url_for('index') }}#eventos" class="nav-back">
+                <i class="fas fa-arrow-left"></i> Volver a eventos
+            </a>
         </div>
+    </nav>
 
-        <div class="peliculas-grid" id="peliculas-grid">
-            {% if peliculas %}
+    <!-- HERO -->
+    <div class="event-hero">
+        <div class="event-hero-inner">
+            <div class="event-tag">Evento activo</div>
+            <h1>Votá tu <em>película</em></h1>
+            <p>Proponé una película y votá por tu favorita. La más votada será la que veamos juntos. ¡Cada like cuenta!
+            </p>
+        </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+
+        <!-- ── LISTA DE PELÍCULAS ── -->
+        <div>
+            <div class="peliculas-header">
+                <div class="section-label">Películas propuestas</div>
+                <span class="peliculas-count" id="count-label">
+                    {{ peliculas|length }} película{{ 's' if peliculas|length != 1 else '' }}
+                </span>
+            </div>
+
+            <div class="peliculas-grid" id="peliculas-grid">
+                {% if peliculas %}
                 {% for p in peliculas %}
                 <div class="pelicula-card reveal d{{ loop.index if loop.index <= 3 else '' }} {{ 'voted' if p.ya_vote else '' }}"
-                     id="card-{{ p.id }}">
+                    id="card-{{ p.id }}">
 
                     <span class="pelicula-rank {{ 'top' if loop.index == 1 else '' }}">
                         {{ '#' + loop.index|string }}
@@ -426,199 +610,231 @@
                         {% endif %}
                     </div>
 
-                    <button
-                        class="btn-vote {{ 'active' if p.ya_vote else '' }}"
-                        onclick="votar({{ p.id }}, this)"
-                        data-id="{{ p.id }}"
-                    >
+                    <button class="btn-vote {{ 'active' if p.ya_vote else '' }}" onclick="votar({{ p.id }}, this)"
+                        data-id="{{ p.id }}">
                         <i class="fas fa-heart"></i>
                         <span class="vote-count">{{ p.total_votos }}</span>
                     </button>
                 </div>
                 {% endfor %}
-            {% else %}
+                {% else %}
                 <div class="empty-state" id="empty-state">
                     <i class="fas fa-film"></i>
                     <p>Todavía no hay películas propuestas.<br>¡Sé el primero en añadir una!</p>
                 </div>
-            {% endif %}
-        </div>
-    </div>
-
-    <!-- ── SIDEBAR ── -->
-    <div class="sidebar">
-
-        <!-- Añadir película -->
-        <div class="add-card reveal d1">
-            <h3><i class="fas fa-plus-circle" style="color:var(--cyan);margin-right:7px;"></i>Añadir película</h3>
-
-            <div class="form-group">
-                <label>Título *</label>
-                <input type="text" id="input-titulo" placeholder="Ej: Interstellar" maxlength="200">
+                {% endif %}
             </div>
-            <div class="form-group">
-                <label>Tu nombre</label>
-                <input type="text" id="input-nombre" placeholder="Opcional" maxlength="100">
-            </div>
-            <div class="form-group">
-                <label>Descripción</label>
-                <textarea id="input-desc" placeholder="Breve descripción o por qué la recomendás..." maxlength="500"></textarea>
-            </div>
-
-            <button class="btn-submit" onclick="agregarPelicula()">
-                <i class="fas fa-film"></i> Proponer película
-            </button>
         </div>
 
-        <!-- Stats -->
-        <div class="stats-card reveal d2" id="stats-card" style="{{ 'display:none' if not peliculas else '' }}">
-            <h3><i class="fas fa-chart-bar" style="color:var(--cyan);margin-right:7px;"></i>Ranking de votos</h3>
-            <div class="stats-list" id="stats-list">
-                {% set max_votos = peliculas[0].total_votos if peliculas else 1 %}
-                {% for p in peliculas[:5] %}
-                <div class="stats-item">
-                    <span class="stats-label" title="{{ p.titulo }}">{{ p.titulo }}</span>
-                    <div class="stats-bar-wrap">
-                        <div class="stats-bar" style="width:{{ ((p.total_votos / max_votos) * 100) if max_votos > 0 else 0 }}%"></div>
-                    </div>
-                    <span class="stats-num">{{ p.total_votos }}</span>
+        <!-- ── SIDEBAR ── -->
+        <div class="sidebar">
+
+            <!-- Añadir película -->
+            <div class="add-card reveal d1">
+                <h3><i class="fas fa-plus-circle" style="color:var(--cyan);margin-right:7px;"></i>Añadir película</h3>
+
+                <div class="form-group">
+                    <label>Título *</label>
+                    <input type="text" id="input-titulo" placeholder="Ej: Interstellar" maxlength="200">
                 </div>
-                {% endfor %}
+                <div class="form-group">
+                    <label>Tu nombre</label>
+                    <input type="text" id="input-nombre" placeholder="Opcional" maxlength="100">
+                </div>
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <textarea id="input-desc" placeholder="Breve descripción o por qué la recomendás..."
+                        maxlength="500"></textarea>
+                </div>
+
+                <button class="btn-submit" onclick="agregarPelicula()">
+                    <i class="fas fa-film"></i> Proponer película
+                </button>
             </div>
+
+            <!-- Stats -->
+            <div class="stats-card reveal d2" id="stats-card" style="{{ 'display:none' if not peliculas else '' }}">
+                <h3><i class="fas fa-chart-bar" style="color:var(--cyan);margin-right:7px;"></i>Ranking de votos</h3>
+                <div class="stats-list" id="stats-list">
+                    {% set max_votos = peliculas[0].total_votos if peliculas else 1 %}
+                    {% for p in peliculas[:5] %}
+                    <div class="stats-item">
+                        <span class="stats-label" title="{{ p.titulo }}">{{ p.titulo }}</span>
+                        <div class="stats-bar-wrap">
+                            <div class="stats-bar"
+                                style="width:{{ ((p.total_votos / max_votos) * 100) if max_votos > 0 else 0 }}%"></div>
+                        </div>
+                        <span class="stats-num">{{ p.total_votos }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
         </div>
-
     </div>
-</div>
 
-<!-- Toast -->
-<div id="toast"></div>
+    <!-- Toast -->
+    <div id="toast"></div>
 
-<script>
-    // ── Scroll reveal ─────────────────────────────
-    const observer = new IntersectionObserver(entries => {
-        entries.forEach(e => {
-            if (e.isIntersecting) { e.target.classList.add('show'); observer.unobserve(e.target); }
-        });
-    }, { threshold: 0.06 });
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-    // ── Toast ─────────────────────────────────────
-    function showToast(msg, type = '') {
-        const t = document.getElementById('toast');
-        t.textContent = msg;
-        t.className = 'show' + (type ? ' ' + type : '');
-        setTimeout(() => t.className = '', 2800);
-    }
-
-    // ── Votar ─────────────────────────────────────
-    async function votar(peliculaId, btn) {
-        btn.disabled = true;
-        try {
-            const res = await fetch(`/evento/votar_pelicula/votar/${peliculaId}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' }
+    <script>
+        // ── Scroll reveal ─────────────────────────────
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) { e.target.classList.add('show'); observer.unobserve(e.target); }
             });
-            const data = await res.json();
+        }, { threshold: 0.06 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-            if (!res.ok) {
-                showToast(data.error || 'Ocurrió un error');
-                return;
+        // ── Toast ─────────────────────────────────────
+        function showToast(msg, type = '') {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.className = 'show' + (type ? ' ' + type : '');
+            setTimeout(() => t.className = '', 2800);
+        }
+        function actualizarBoton(btn, activo) {
+
+            const icon = btn.querySelector('i');
+
+            if (activo) {
+                icon.classList.remove('fa-regular');
+                icon.classList.add('fa-solid');
+                btn.title = "Quitar voto";
+            } else {
+                icon.classList.remove('fa-solid');
+                icon.classList.add('fa-regular');
+                btn.title = "Votar";
             }
 
-            // Actualizar contador
-            btn.querySelector('.vote-count').textContent = data.total_votos;
+        }
+        // ── Votar ─────────────────────────────────────
+        async function votar(peliculaId, btn) {
 
-            // Toggle estado visual
+            const contador = btn.querySelector('.vote-count');
             const card = document.getElementById('card-' + peliculaId);
-            if (data.ya_vote) {
-                btn.classList.add('active');
-                card.classList.add('voted');
-                showToast('¡Like añadido! 💙', 'cyan');
-            } else {
+
+            const votosOriginal = parseInt(contador.textContent) || 0;
+            const estabaActivo = btn.classList.contains('active');
+
+            // ── Optimistic UI ──
+            if (estabaActivo) {
+                contador.textContent = votosOriginal - 1;
                 btn.classList.remove('active');
                 card.classList.remove('voted');
-                showToast('Voto retirado');
+                actualizarBoton(btn, false);
+            } else {
+                contador.textContent = votosOriginal + 1;
+                btn.classList.add('active');
+                card.classList.add('voted');
+                actualizarBoton(btn, true);
+                
             }
 
-            // Reordenar tarjetas por votos
             reordenarPeliculas();
             actualizarStats();
 
-        } catch (err) {
-            showToast('Error de conexión');
-        } finally {
-            btn.disabled = false;
+            btn.disabled = true;
+
+            try {
+                const res = await fetch(`/evento/votar_pelicula/votar/${peliculaId}`, {
+                    method: 'POST'
+                });
+
+                const data = await res.json();
+
+                if (!res.ok) throw new Error();
+
+                // sincronizar con valor real
+                contador.textContent = data.total_votos;
+
+            } catch {
+
+                // revertir si falla
+                contador.textContent = votosOriginal;
+
+                if (estabaActivo) {
+                    btn.classList.add('active');
+                    card.classList.add('voted');
+                } else {
+                    btn.classList.remove('active');
+                    card.classList.remove('voted');
+                }
+
+                showToast('Error de conexión');
+
+            } finally {
+                btn.disabled = false;
+            }
         }
-    }
 
-    // ── Añadir película ───────────────────────────
-    async function agregarPelicula() {
-        const titulo = document.getElementById('input-titulo').value.trim();
-        const nombre = document.getElementById('input-nombre').value.trim();
-        const desc   = document.getElementById('input-desc').value.trim();
+        // ── Añadir película ───────────────────────────
+        async function agregarPelicula() {
+            const titulo = document.getElementById('input-titulo').value.trim();
+            const nombre = document.getElementById('input-nombre').value.trim();
+            const desc = document.getElementById('input-desc').value.trim();
 
-        if (!titulo) {
-            showToast('El título es obligatorio');
-            document.getElementById('input-titulo').focus();
-            return;
-        }
-
-        const btn = document.querySelector('.btn-submit');
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Añadiendo...';
-
-        try {
-            const res = await fetch('/evento/votar_pelicula/agregar', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ titulo, nombre, descripcion: desc })
-            });
-            const data = await res.json();
-
-            if (!res.ok) {
-                showToast(data.error || 'No se pudo añadir');
+            if (!titulo) {
+                showToast('El título es obligatorio');
+                document.getElementById('input-titulo').focus();
                 return;
             }
 
-            // Limpiar form
-            document.getElementById('input-titulo').value = '';
-            document.getElementById('input-nombre').value = '';
-            document.getElementById('input-desc').value   = '';
+            const btn = document.querySelector('.btn-submit');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Añadiendo...';
 
-            // Añadir card al grid
-            insertarCardPelicula(data);
-            actualizarContador();
-            actualizarStats();
-            showToast('¡Película añadida! 🎬', 'cyan');
+            try {
+                const res = await fetch('/evento/votar_pelicula/agregar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ titulo, nombre, descripcion: desc })
+                });
+                const data = await res.json();
 
-        } catch (err) {
-            showToast('Error de conexión');
-        } finally {
-            btn.disabled = false;
-            btn.innerHTML = '<i class="fas fa-film"></i> Proponer película';
+                if (!res.ok) {
+                    showToast(data.error || 'No se pudo añadir');
+                    return;
+                }
+
+                // Limpiar form
+                document.getElementById('input-titulo').value = '';
+                document.getElementById('input-nombre').value = '';
+                document.getElementById('input-desc').value = '';
+
+                // Añadir card al grid
+                insertarCardPelicula(data);
+                actualizarContador();
+                actualizarStats();
+                showToast('¡Película añadida! 🎬', 'cyan');
+
+            } catch (err) {
+                showToast('Error de conexión');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-film"></i> Proponer película';
+            }
         }
-    }
 
-    // ── Insertar nueva card ───────────────────────
-    function insertarCardPelicula(p) {
-        const grid = document.getElementById('peliculas-grid');
+        // ── Insertar nueva card ───────────────────────
+        function insertarCardPelicula(p) {
+            const grid = document.getElementById('peliculas-grid');
 
-        // Quitar empty state si existe
-        const empty = document.getElementById('empty-state');
-        if (empty) empty.remove();
+            // Quitar empty state si existe
+            const empty = document.getElementById('empty-state');
+            if (empty) empty.remove();
 
-        // Mostrar stats card
-        document.getElementById('stats-card').style.display = '';
+            // Mostrar stats card
+            document.getElementById('stats-card').style.display = '';
 
-        const card = document.createElement('div');
-        card.className = 'pelicula-card';
-        card.id = 'card-' + p.id;
-        card.innerHTML = `
+            const card = document.createElement('div');
+            card.className = 'pelicula-card';
+            card.id = 'card-' + p.id;
+            card.innerHTML = `
             <span class="pelicula-rank">#${grid.children.length + 1}</span>
             <div class="pelicula-info">
                 <div class="pelicula-titulo">${escapeHtml(p.titulo)}</div>
                 ${p.agregada_por ? `<div class="pelicula-meta"><i class="fas fa-user" style="font-size:.65rem;"></i> ${escapeHtml(p.agregada_por)}</div>` : ''}
-                ${p.descripcion  ? `<div class="pelicula-desc">${escapeHtml(p.descripcion)}</div>` : ''}
+                ${p.descripcion ? `<div class="pelicula-desc">${escapeHtml(p.descripcion)}</div>` : ''}
             </div>
             <button class="btn-vote" onclick="votar(${p.id}, this)" data-id="${p.id}">
                 <i class="fas fa-heart"></i>
@@ -626,46 +842,46 @@
             </button>
         `;
 
-        // Animate in
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(10px)';
-        grid.appendChild(card);
-        requestAnimationFrame(() => {
-            card.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
-            card.style.opacity = '1';
-            card.style.transform = 'none';
-        });
-    }
-
-    // ── Reordenar por votos ───────────────────────
-    function reordenarPeliculas() {
-        const grid = document.getElementById('peliculas-grid');
-        const cards = Array.from(grid.querySelectorAll('.pelicula-card'));
-        cards.sort((a, b) => {
-            const va = parseInt(a.querySelector('.vote-count').textContent) || 0;
-            const vb = parseInt(b.querySelector('.vote-count').textContent) || 0;
-            return vb - va;
-        });
-        cards.forEach((card, i) => {
-            const rank = card.querySelector('.pelicula-rank');
-            rank.textContent = '#' + (i + 1);
-            rank.classList.toggle('top', i === 0);
+            // Animate in
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(10px)';
             grid.appendChild(card);
-        });
-    }
+            requestAnimationFrame(() => {
+                card.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+                card.style.opacity = '1';
+                card.style.transform = 'none';
+            });
+        }
 
-    // ── Actualizar stats sidebar ──────────────────
-    function actualizarStats() {
-        const grid   = document.getElementById('peliculas-grid');
-        const cards  = Array.from(grid.querySelectorAll('.pelicula-card'));
-        const datos  = cards.map(c => ({
-            titulo: c.querySelector('.pelicula-titulo').textContent,
-            votos:  parseInt(c.querySelector('.vote-count').textContent) || 0
-        })).sort((a, b) => b.votos - a.votos).slice(0, 5);
+        // ── Reordenar por votos ───────────────────────
+        function reordenarPeliculas() {
+            const grid = document.getElementById('peliculas-grid');
+            const cards = Array.from(grid.querySelectorAll('.pelicula-card'));
+            cards.sort((a, b) => {
+                const va = parseInt(a.querySelector('.vote-count').textContent) || 0;
+                const vb = parseInt(b.querySelector('.vote-count').textContent) || 0;
+                return vb - va;
+            });
+            cards.forEach((card, i) => {
+                const rank = card.querySelector('.pelicula-rank');
+                rank.textContent = '#' + (i + 1);
+                rank.classList.toggle('top', i === 0);
+                grid.appendChild(card);
+            });
+        }
 
-        const maxV = datos[0]?.votos || 1;
-        const list = document.getElementById('stats-list');
-        list.innerHTML = datos.map(d => `
+        // ── Actualizar stats sidebar ──────────────────
+        function actualizarStats() {
+            const grid = document.getElementById('peliculas-grid');
+            const cards = Array.from(grid.querySelectorAll('.pelicula-card'));
+            const datos = cards.map(c => ({
+                titulo: c.querySelector('.pelicula-titulo').textContent,
+                votos: parseInt(c.querySelector('.vote-count').textContent) || 0
+            })).sort((a, b) => b.votos - a.votos).slice(0, 5);
+
+            const maxV = datos[0]?.votos || 1;
+            const list = document.getElementById('stats-list');
+            list.innerHTML = datos.map(d => `
             <div class="stats-item">
                 <span class="stats-label" title="${escapeHtml(d.titulo)}">${escapeHtml(d.titulo)}</span>
                 <div class="stats-bar-wrap">
@@ -674,22 +890,23 @@
                 <span class="stats-num">${d.votos}</span>
             </div>
         `).join('');
-    }
+        }
 
-    // ── Actualizar contador header ────────────────
-    function actualizarContador() {
-        const n = document.getElementById('peliculas-grid').querySelectorAll('.pelicula-card').length;
-        document.getElementById('count-label').textContent = `${n} película${n !== 1 ? 's' : ''}`;
-    }
+        // ── Actualizar contador header ────────────────
+        function actualizarContador() {
+            const n = document.getElementById('peliculas-grid').querySelectorAll('.pelicula-card').length;
+            document.getElementById('count-label').textContent = `${n} película${n !== 1 ? 's' : ''}`;
+        }
 
-    // ── Escape HTML ───────────────────────────────
-    function escapeHtml(str) {
-        return String(str)
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;');
-    }
-</script>
+        // ── Escape HTML ───────────────────────────────
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+    </script>
 </body>
+
 </html>

@@ -1,4 +1,6 @@
-from models import db
+from flask_sqlalchemy import SQLAlchemy
+from extensions import db
+from sqlalchemy import func
 
 class Pelicula(db.Model):
     __tablename__ = 'peliculas'
@@ -13,16 +15,19 @@ class Pelicula(db.Model):
  
     @property
     def total_votos(self):
-        return len(self.votos) # type: ignore
+        return db.session.query(func.count(VotoPelicula.id))\
+            .filter(VotoPelicula.pelicula_id == self.id)\
+            .scalar()
 
 class VotoPelicula(db.Model):
-    """Un registro por like. Se identifica por IP para evitar doble voto."""
+
     __tablename__ = 'votos_pelicula'
- 
-    id          = db.Column(db.Integer, primary_key=True)
+
+    id = db.Column(db.Integer, primary_key=True)
     pelicula_id = db.Column(db.Integer, db.ForeignKey('peliculas.id'), nullable=False)
-    voter_ip    = db.Column(db.String(45), nullable=False)   # soporta IPv6
- 
+    voter_ip = db.Column(db.String(45), nullable=False)
+
     __table_args__ = (
         db.UniqueConstraint('pelicula_id', 'voter_ip', name='uq_voto_pelicula_ip'),
+        db.Index('idx_votos_pelicula', 'pelicula_id')
     )

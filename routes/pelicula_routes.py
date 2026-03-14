@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, jsonify
-from crud import agregar_pelicula, votar_pelicula, obtener_peliculas
+from services.pelicula_services import agregar_pelicula, votar_pelicula, obtener_peliculas
 
 votar_pelicula_bp = Blueprint('votar_pelicula', __name__, url_prefix='/evento/votar_pelicula')
 
@@ -49,5 +49,24 @@ def votar(pelicula_id):
         return jsonify({'total_votos': total, 'ya_vote': ya_vote})
     except ValueError as e:
         return jsonify({'error': str(e)}), 404
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+@votar_pelicula_bp.route('/eliminar/<int:pelicula_id>', methods=['DELETE'])
+def eliminar(pelicula_id):
+
+    from services.pelicula_services import eliminar_pelicula
+
+    try:
+        eliminado = eliminar_pelicula(pelicula_id)
+
+        if not eliminado:
+            return jsonify({'error': 'Película no encontrada'}), 404
+
+        return jsonify({
+            'ok': True,
+            'pelicula_id': pelicula_id
+        })
+
     except Exception as e:
         return jsonify({'error': str(e)}), 500

@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 
-db = SQLAlchemy()
+from extensions import db
 
 class Propuesta(db.Model):
     __tablename__ = "propuestas"

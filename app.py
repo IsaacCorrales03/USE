@@ -8,18 +8,11 @@ from flask import (
     redirect,
     make_response
 )
-from oldmodels import db
 from models.propuesta import Propuesta
-from crud import (
-    crear_integrante, cambiar_estado_integrante,
-    cambiar_integrante_de_grupo, crear_grupo,
-    obtener_grupos_con_integrantes,
-    crear_integrante_mk, cambiar_estado_integrante_mk,
-    cambiar_integrante_de_grupo_mk, crear_grupo_mk,
-    obtener_grupos_con_integrantes_mk
-)
 from dotenv import load_dotenv
 import json, os
+from services.pelicula_services import obtener_peliculas
+from extensions import db
 load_dotenv()
 EVENTOS = {
     "votar-pelicula": {
@@ -27,28 +20,30 @@ EVENTOS = {
         "descripcion": "Votá por la película que querés ver en el próximo evento del colegio.",
         "icono": "fas fa-film",
         "handler": "eventos.votar_pelicula",
-        "template": "eventos/votar_pelicula.html",
+        "template": "/votar_pelicula.html",
     }
 }
-
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("sql_uri", None)
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
     "connect_args": {
-        "ssl": {}
+        "sslmode": "require"
     }
 }
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
+from routes.pelicula_routes import votar_pelicula_bp
+app.register_blueprint(votar_pelicula_bp)
 db.init_app(app)
-
+with app.app_context():
+    db.create_all()
 # Fetch the proposals from the DB
 @app.route("/propuestas", methods=["GET"])
 def propuestas():
     propuestas = Propuesta.query.order_by(Propuesta.votos.desc()).all()
     return render_template("propuestas.html", propuestas=propuestas)
+
 # Let users submit a new idea
 @app.route("/propuestas/crear", methods=["POST"])
 def crear_propuesta():
@@ -63,6 +58,7 @@ def crear_propuesta():
     db.session.commit()
 
     return redirect("/propuestas")
+
 # Vote for proposal
 # IP Limitations
 vote_timestamps = {}
@@ -77,6 +73,7 @@ def check_ip_rate_limit(ip, propuesta_id):
     
     vote_timestamps[key] = time.time()
     return True
+
 # Cookie tracking
 @app.route("/propuestas/<int:id>/votar", methods=["POST"])
 def votar_propuesta(id):
@@ -110,11 +107,23 @@ def votar_propuesta(id):
 @app.route("/")
 def index():
     return render_template('index.html', EVENTOS= EVENTOS)
+
+
 @app.route("/evento/<slug>")
 def evento_detalle(slug):
     evento = EVENTOS.get(slug)
     if not evento:
         abort(404)
+    ip = request.remote_addr
+    if slug == "votar-pelicula":
+        peliculas = obtener_peliculas(ip)
+        return render_template(
+            evento["template"],
+            evento=evento,
+            slug=slug,
+            peliculas=peliculas
+        )
+
     return render_template(evento["template"], evento=evento, slug=slug)
 # Ver todos los grupos y sus integrantes (Smash)
 @app.route("/torneo_smash", methods=["GET"])
