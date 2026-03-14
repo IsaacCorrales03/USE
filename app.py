@@ -1,4 +1,13 @@
-from flask import Flask, jsonify, request, render_template, send_from_directory, abort
+from flask import (
+    Flask,
+    jsonify,
+    request,
+    render_template,
+    send_from_directory,
+    abort,
+    redirect,
+    make_response
+)
 from oldmodels import db
 from models.propuesta import Propuesta
 from crud import (
@@ -10,7 +19,7 @@ from crud import (
     obtener_grupos_con_integrantes_mk
 )
 from dotenv import load_dotenv
-import os
+import json, os
 load_dotenv()
 EVENTOS = {
     "votar-pelicula": {
@@ -35,13 +44,67 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
 
-
 # Fetch the proposals from the DB
 @app.route("/propuestas", methods=["GET"])
 def propuestas():
     propuestas = Propuesta.query.order_by(Propuesta.votos.desc()).all()
     return render_template("propuestas.html", propuestas=propuestas)
+# Let users submit a new idea
+@app.route("/propuestas/crear", methods=["POST"])
+def crear_propuesta():
+    descripcion = request.form.get("descripcion")
 
+    if not descripcion:
+        return redirect("/propuestas")
+    
+    propuesta = Propuesta(descripcion=descripcion)
+
+    db.session.add(propuesta)
+    db.session.commit()
+
+    return redirect("/propuestas")
+# Vote for proposal
+# IP Limitations
+vote_timestamps = {}
+RATE_LIMIT_SECONDS = 30
+
+def check_ip_rate_limit(ip, propuesta_id):
+    key = (ip, propuesta_id)
+    last = vote_timestamps.get(key, 0)
+
+    if time.time() - last < RATE_LIMIT_SECONDS:
+        return False
+    
+    vote_timestamps[key] = time.time()
+    return True
+# Cookie tracking
+@app.route("/propuestas/<int:id>/votar", methods=["POST"])
+def votar_propuesta(id):
+    propuesta = Propuesta.query.get_or_404(id)
+    ip = request.remote_addr
+
+    if not check_ip_rate_limit(ip, id):
+        return redirect("/propuestas")
+    
+    raw = request.cookies.get("voted_proposals", "[]")
+    voted = json.loads(raw)
+
+    if id in voted:
+        return redirect("/propuestas")
+    
+    propuestas.votos += 1
+    db.session.commit()
+
+    voted.append(id)
+
+    response = make_response(redirect("/propuestas"))
+    response.set_cookie(
+        "voted_proposals",
+        json.dump(voted),
+        max_age=60*60*24*365
+    )
+
+    return response
 
 # Endpoint de bienvenida
 @app.route("/")
