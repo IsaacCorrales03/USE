@@ -19,14 +19,7 @@ EVENTOS = {
         "icono": "fas fa-film",
         "handler": "eventos.votar_pelicula",
         "template": "eventos/votar_pelicula.html",
-    },
-    "preventa": {
-        "nombre": "Preventa de donas",
-        "descripcion": "Reservá tus donas antes de que se agoten. Recogé el día del evento.",
-        "icono": "fas fa-cookie-bite",
-        "handler": "eventos.preventa_dona",
-        "template": "eventos/preventa.html",
-    },
+    }
 }
 
 
