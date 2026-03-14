@@ -1,4 +1,4 @@
-from models import db, Grupo, Integrante, Grupo_mk, Integrante_mk
+from oldmodels import db, Grupo, Integrante, Grupo_mk, Integrante_mk
 
 
 # Crear un nuevo integrante y asignarlo a un grupo
@@ -76,7 +76,7 @@ def cambiar_integrante_de_grupo(integrante_id, nuevo_grupo_id):
         return None
         
     # Validar que el grupo exista
-    from models import Grupo
+    from oldmodels import Grupo
     grupo = Grupo.query.get(nuevo_grupo_id)
     if not grupo:
         raise ValueError(f"El grupo con id {nuevo_grupo_id} no existe")

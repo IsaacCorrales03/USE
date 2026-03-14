@@ -1,6 +1,6 @@
 from crud import crear_grupo, crear_integrante, obtener_grupos_con_integrantes
 from app import app  # Asegúrate de que aquí se importe tu Flask app correctamente
-from models import db
+from oldmodels import db
 
 # Datos de grupos
 nombres_grupos = (

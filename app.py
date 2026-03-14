@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request, render_template, send_from_directory, abort
-from models import db
+from oldmodels import db
+from models.propuesta import Propuesta
 from crud import (
     crear_integrante, cambiar_estado_integrante,
     cambiar_integrante_de_grupo, crear_grupo,
@@ -40,6 +41,14 @@ app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
+
+
+# Fetch the proposals from the DB
+@app.route("/propuestas", methods=["GET"])
+def propuestas():
+    propuestas = Propuesta.query.order_by(Propuesta.votos.desc()).all()
+    return render_template("propuestas.html", propuestas=propuestas)
+
 
 # Endpoint de bienvenida
 @app.route("/")
