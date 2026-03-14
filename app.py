@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, render_template, send_from_directory #APP.PY DEIVID
+from flask import Flask, jsonify, request, render_template, send_from_directory, abort
 from models import db
 from crud import (
     crear_integrante, cambiar_estado_integrante,
@@ -11,6 +11,22 @@ from crud import (
 from dotenv import load_dotenv
 import os
 load_dotenv()
+EVENTOS = {
+    "votar-pelicula": {
+        "nombre": "Votación de películas",
+        "descripcion": "Votá por la película que querés ver en el próximo evento del colegio.",
+        "icono": "fas fa-film",
+        "handler": "eventos.votar_pelicula",
+        "template": "eventos/votar_pelicula.html",
+    },
+    "preventa": {
+        "nombre": "Preventa de donas",
+        "descripcion": "Reservá tus donas antes de que se agoten. Recogé el día del evento.",
+        "icono": "fas fa-cookie-bite",
+        "handler": "eventos.preventa_dona",
+        "template": "eventos/preventa.html",
+    },
+}
 
 
 app = Flask(__name__)
@@ -28,8 +44,13 @@ db.init_app(app)
 # Endpoint de bienvenida
 @app.route("/")
 def index():
-    return render_template('index.html')
-
+    return render_template('index.html', EVENTOS= EVENTOS)
+@app.route("/evento/<slug>")
+def evento_detalle(slug):
+    evento = EVENTOS.get(slug)
+    if not evento:
+        abort(404)
+    return render_template(evento["template"], evento=evento, slug=slug)
 # Ver todos los grupos y sus integrantes (Smash)
 @app.route("/torneo_smash", methods=["GET"])
 def torneo_smash():
