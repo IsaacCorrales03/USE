@@ -3,3 +3,4 @@ flask_sqlalchemy
 pymysql
 requests
 psycopg2-binary
+dotenv
