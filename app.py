@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, render_template, send_from_directory
+from flask import Flask, jsonify, request, render_template, send_from_directory #APP.PY DEIVID
 from models import db
 from crud import (
     crear_integrante, cambiar_estado_integrante,
