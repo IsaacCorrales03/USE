@@ -151,3 +151,4 @@ if __name__ == '__main__':
     threading.Thread(target=ping_periodico, daemon=True).start()
     app.run(host='0.0.0.0', port=8080, debug=True)
 
+# Let's begin
