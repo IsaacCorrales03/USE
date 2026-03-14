@@ -49,6 +49,19 @@
             transform: translateY(-2px);
         }
 
+        .nav-link-eventos {
+            transition: all 0.3s ease;
+            border: 1.5px solid var(--primary-color);
+            color: var(--primary-color) !important;
+            font-weight: 600;
+        }
+
+        .nav-link-eventos:hover {
+            background-color: var(--primary-color);
+            color: white !important;
+            transform: translateY(-2px);
+        }
+
         .tournament-card {
             position: relative;
             overflow: hidden;
@@ -145,13 +158,14 @@
                         <p class="text-white text-sm">Unión Social Estudiantil</p>
                     </div>
                 </div>
-                <div class="hidden md:flex space-x-4">
+                <div class="hidden md:flex space-x-4 items-center">
                     <a href="#inicio" class="nav-link text-white py-2 px-4 rounded">Inicio</a>
                     <a href="#miembros" class="nav-link text-white py-2 px-4 rounded">Miembros</a>
                     <a href="#objetivos" class="nav-link text-white py-2 px-4 rounded">Objetivos</a>
                     <a href="#propuestas" class="nav-link text-white py-2 px-4 rounded">Propuestas</a>
                     <a href="#cronograma" class="nav-link text-white py-2 px-4 rounded">Cronograma</a>
                     <a href="#torneos" class="nav-link text-white py-2 px-4 rounded">Torneos</a>
+                    <a href="{{ url_for('eventos') }}" class="nav-link-eventos py-2 px-4 rounded">Eventos</a>
                 </div>
                 <div class="md:hidden">
                     <button id="menu-toggle" class="text-white focus:outline-none">
@@ -170,6 +184,7 @@
                 <a href="#miembros" class="block text-white py-2 px-4 rounded">Miembros</a>
                 <a href="#objetivos" class="block text-white py-2 px-4 rounded">Objetivos</a>
                 <a href="#propuestas" class="block text-white py-2 px-4 rounded">Propuestas</a>
+                <a href="{{ url_for('eventos') }}" class="block primary-text font-semibold py-2 px-4 rounded">Eventos</a>
             </div>
         </div>
     </nav>
@@ -452,6 +467,7 @@
                     <a href="#objetivos" class="text-white hover:primary-text transition duration-300">Objetivos</a>
                     <a href="#propuestas" class="text-white hover:primary-text transition duration-300">Propuestas</a>
                     <a href="#torneos" class="text-white hover:primary-text transition duration-300">Torneos</a>
+                    <a href="{{ url_for('eventos') }}" class="primary-text font-semibold transition duration-300">Eventos</a>
                 </div>
 
                 <div class="flex gap-4 mt-6 md:mt-0">
@@ -481,32 +497,27 @@
             const menuToggle = document.getElementById('menu-toggle');
             const mobileMenu = document.getElementById('mobile-menu');
 
-            // Add transition styles to mobile menu for smooth animation
             mobileMenu.style.transition = 'all 0.3s ease-in-out';
             mobileMenu.style.opacity = '0';
             mobileMenu.style.maxHeight = '0';
             mobileMenu.style.overflow = 'hidden';
 
-            // Toggle mobile menu with animation when hamburger button is clicked
             menuToggle.addEventListener('click', function () {
                 if (mobileMenu.classList.contains('hidden')) {
-                    // Show menu with animation
                     mobileMenu.classList.remove('hidden');
                     setTimeout(() => {
                         mobileMenu.style.opacity = '1';
-                        mobileMenu.style.maxHeight = '300px'; // Adjust based on your menu height
+                        mobileMenu.style.maxHeight = '300px';
                     }, 10);
                 } else {
-                    // Hide menu with animation
                     mobileMenu.style.opacity = '0';
                     mobileMenu.style.maxHeight = '0';
                     setTimeout(() => {
                         mobileMenu.classList.add('hidden');
-                    }, 300); // Match transition duration
+                    }, 300);
                 }
             });
 
-            // Hide mobile menu when clicking on a link
             const mobileLinks = mobileMenu.querySelectorAll('a');
             mobileLinks.forEach(link => {
                 link.addEventListener('click', function () {
@@ -518,7 +529,6 @@
                 });
             });
 
-            // Hide mobile menu when clicking outside
             document.addEventListener('click', function (event) {
                 if (!menuToggle.contains(event.target) && !mobileMenu.contains(event.target) && !mobileMenu.classList.contains('hidden')) {
                     mobileMenu.style.opacity = '0';
@@ -529,9 +539,8 @@
                 }
             });
 
-            // Close menu when window is resized to desktop size
             window.addEventListener('resize', function () {
-                if (window.innerWidth >= 768) { // 768px is the md breakpoint in Tailwind
+                if (window.innerWidth >= 768) {
                     mobileMenu.style.opacity = '0';
                     mobileMenu.style.maxHeight = '0';
                     setTimeout(() => {

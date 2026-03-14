@@ -8,9 +8,13 @@ from crud import (
     cambiar_integrante_de_grupo_mk, crear_grupo_mk,
     obtener_grupos_con_integrantes_mk
 )
+from dotenv import load_dotenv
+import os
+load_dotenv()
+
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://avnadmin:AVNS_M4d5uHlTqavp-NKx7l4@newrali-zenithai.k.aivencloud.com:24527/defaultdb'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("sql_uri", None)
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
     "connect_args": {
         "ssl": {}
@@ -134,6 +138,10 @@ def agregar_integrante_a_grupo_mk(grupo_id):
         "mensaje": f"{nombre} agregado al grupo {grupo_id}",
         "integrante_id": integrante.id
     })
+
+@app.route("/eventos", methods=["GET"])
+def eventos():
+    return "hello"
 import threading
 import time
 import requests
