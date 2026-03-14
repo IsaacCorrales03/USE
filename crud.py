@@ -92,6 +92,7 @@ def crear_grupo(nombre):
     db.session.add(nuevo_grupo)
     db.session.commit()
     return nuevo_grupo
+
 # Cambiar el estado "descalificado" de un integrante
 def cambiar_estado_integrante(integrante_id, descalificado=True):
     integrante = Integrante.query.get(integrante_id)
@@ -119,3 +120,5 @@ def obtener_grupos_con_integrantes():
             "integrantes": integrantes
         })
     return resultado
+
+
