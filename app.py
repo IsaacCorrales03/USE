@@ -16,6 +16,7 @@ app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
         "ssl": {}
     }
 }
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
@@ -136,6 +137,7 @@ def agregar_integrante_a_grupo_mk(grupo_id):
 import threading
 import time
 import requests
+
 def ping_periodico():
     while True:
         try:
@@ -143,7 +145,7 @@ def ping_periodico():
             requests.get("https://union-social-estudiantil.onrender.com/")
         except Exception as e:
             print(f"Error al hacer ping: {e}")
-        time.sleep(30)  # Espera 30 segundos
+        time.sleep(30)
 
 if __name__ == '__main__':
     threading.Thread(target=ping_periodico, daemon=True).start()
