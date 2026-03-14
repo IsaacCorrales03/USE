@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propuestas – USE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --cyan: #2ec4c4;
+            --cyan-light: #e4f7f7;
+            --cyan-mid: #c2ebeb;
+            --bg: #f4f3f1;
+            --bg-2: #eceae7;
+            --bg-3: #e3e1de;
+            --white: #ffffff;
+            --text: #2a2826;
+            --stone: #4a4743;
+            --stone-light: #7a7673;
+            --stone-lighter: #b8b4b0;
+            --border: #dddad6;
+            --danger: #e05555;
+            --danger-light: #fdf0f0;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* ── NAV ─────────────────────────────────── */
+        #navbar {
+            position: fixed; top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: rgba(244,243,241,0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-inner {
+            max-width: 1200px; margin: 0 auto;
+            padding: 0 2rem; height: 62px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .nav-brand {
+            display: flex; align-items: center; gap: 10px;
+            text-decoration: none;
+        }
+        .nav-brand img { height: 34px; }
+        .nav-brand-name {
+            font-size: 1.25rem; font-weight: 700;
+            color: var(--text); letter-spacing: -0.02em;
+        }
+        .nav-back {
+            display: inline-flex; align-items: center; gap: 7px;
+            font-size: 0.82rem; font-weight: 500;
+            color: var(--stone-light); text-decoration: none;
+            padding: 7px 14px; border-radius: 8px;
+            border: 1px solid var(--border);
+            transition: color 0.2s, background 0.2s;
+        }
+        .nav-back:hover { color: var(--text); background: var(--bg-2); }
+
+        /* ── HERO STRIP ──────────────────────────── */
+        .event-hero {
+            padding-top: 62px;
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+        }
+        .event-hero-inner {
+            max-width: 1200px; margin: 0 auto;
+            padding: 3.5rem 2rem 3rem;
+        }
+        .event-tag {
+            display: inline-flex; align-items: center; gap: 7px;
+            font-size: 0.68rem; font-weight: 600;
+            letter-spacing: 0.14em; text-transform: uppercase;
+            color: var(--cyan); margin-bottom: 1rem;
+        }
+        .event-tag::before {
+            content: ''; width: 14px; height: 2px;
+            background: var(--cyan); border-radius: 2px;
+        }
+        .event-hero-inner h1 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700; letter-spacing: -0.03em;
+            line-height: 1.1; margin-bottom: 0.7rem;
+        }
+        .event-hero-inner h1 em {
+            font-style: italic; font-weight: 400; color: var(--cyan);
+        }
+        .event-hero-inner p {
+            font-size: 0.95rem; color: var(--stone-light);
+            max-width: 520px; line-height: 1.8; font-weight: 300;
+        }
+
+        /* ── MAIN LAYOUT ─────────────────────────── */
+        .main {
+            max-width: 1200px; margin: 0 auto;
+            padding: 3rem 2rem 5rem;
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 2rem; align-items: start;
+        }
+        @media (max-width: 860px) { .main { grid-template-columns: 1fr; } }
+
+        /* ── SECTION LABEL ───────────────────────── */
+        .section-label {
+            font-size: 0.68rem; font-weight: 600;
+            letter-spacing: 0.14em; text-transform: uppercase;
+            color: var(--cyan);
+            display: flex; align-items: center; gap: 8px;
+            margin-bottom: 1.2rem;
+        }
+        .section-label::before {
+            content: ''; width: 12px; height: 2px;
+            background: var(--cyan); border-radius: 2px;
+        }
+
+        /* ── PROPUESTAS LIST ─────────────────────── */
+        .propuestas-header {
+            display: flex; align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.2rem; flex-wrap: wrap; gap: 0.8rem;
+        }
+        .propuestas-count {
+            font-size: 0.82rem; color: var(--stone-lighter); font-weight: 400;
+        }
+        .propuestas-list {
+            display: flex; flex-direction: column; gap: 0.75rem;
+        }
+
+        .prop-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.3rem 1.5rem;
+            display: flex; align-items: flex-start; gap: 1.2rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .prop-card:hover {
+            border-color: var(--cyan-mid);
+            box-shadow: 0 4px 20px rgba(46,196,196,0.08);
+        }
+        .prop-card.voted {
+            border-color: var(--cyan-mid);
+            background: #f4fbfb;
+        }
+
+        .prop-num {
+            font-size: 0.72rem; font-weight: 700;
+            color: var(--stone-lighter); min-width: 28px;
+            padding-top: 2px; flex-shrink: 0;
+        }
+        .prop-num.top { color: var(--cyan); }
+
+        .prop-info { flex: 1; min-width: 0; }
+        .prop-desc-text {
+            font-size: 0.95rem; font-weight: 500;
+            color: var(--text); line-height: 1.5;
+            word-break: break-word;
+        }
+
+        /* Vote button */
+        .btn-vote {
+            display: flex; flex-direction: column; align-items: center;
+            gap: 3px; flex-shrink: 0;
+            background: var(--bg-2); border: 1px solid var(--border);
+            border-radius: 10px; padding: 8px 12px;
+            cursor: pointer; color: var(--stone-lighter);
+            font-size: 0.88rem; font-weight: 600;
+            transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.15s;
+            min-width: 52px;
+        }
+        .btn-vote i { font-size: 1rem; }
+        .btn-vote:hover:not(:disabled) {
+            background: var(--cyan-light); border-color: var(--cyan-mid);
+            color: var(--cyan); transform: scale(1.04);
+        }
+        .btn-vote.active {
+            background: var(--cyan-light); border-color: var(--cyan);
+            color: var(--cyan);
+        }
+        .btn-vote:disabled { opacity: 0.55; cursor: not-allowed; }
+        .vote-count { font-size: 0.78rem; }
+
+        /* Delete button (admin-style, subtle) */
+        .btn-delete {
+            background: none; border: none; cursor: pointer;
+            color: var(--stone-lighter); font-size: 0.75rem;
+            padding: 4px 6px; border-radius: 6px;
+            transition: color 0.2s, background 0.2s;
+            margin-top: 0.4rem;
+        }
+        .btn-delete:hover { color: var(--danger); background: var(--danger-light); }
+
+        /* Empty state */
+        #empty-state {
+            padding: 4rem 2rem; text-align: center;
+            color: var(--stone-lighter);
+        }
+        #empty-state i { font-size: 2rem; display: block; margin-bottom: 1rem; opacity: .4; }
+        #empty-state p { font-size: 0.9rem; }
+
+        /* ── SIDEBAR ─────────────────────────────── */
+        .sidebar { display: flex; flex-direction: column; gap: 1.2rem; }
+
+        .card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 16px; padding: 1.5rem;
+        }
+        .card-title {
+            font-size: 0.9rem; font-weight: 600;
+            color: var(--text); margin-bottom: 1.1rem;
+            letter-spacing: -0.01em;
+        }
+
+        /* Form */
+        .form-field { margin-bottom: 0.85rem; }
+        .form-field label {
+            font-size: 0.72rem; font-weight: 600;
+            letter-spacing: 0.06em; text-transform: uppercase;
+            color: var(--stone-light); display: block; margin-bottom: 0.35rem;
+        }
+        .form-field textarea,
+        .form-field input {
+            width: 100%; background: var(--bg);
+            border: 1px solid var(--border); border-radius: 9px;
+            padding: 10px 12px; font-family: inherit;
+            font-size: 0.88rem; color: var(--text); resize: none;
+            transition: border-color 0.2s;
+            outline: none;
+        }
+        .form-field textarea:focus,
+        .form-field input:focus { border-color: var(--cyan); }
+        .form-field textarea { min-height: 90px; line-height: 1.6; }
+        .char-count {
+            font-size: 0.68rem; color: var(--stone-lighter);
+            text-align: right; margin-top: 3px;
+        }
+
+        .btn-submit {
+            width: 100%; padding: 11px;
+            background: var(--cyan); color: var(--white);
+            border: none; border-radius: 999px;
+            font-family: inherit; font-size: 0.88rem; font-weight: 600;
+            cursor: pointer; display: flex; align-items: center;
+            justify-content: center; gap: 7px;
+            transition: opacity 0.2s, transform 0.15s;
+        }
+        .btn-submit:hover:not(:disabled) { opacity: 0.88; transform: translateY(-1px); }
+        .btn-submit:disabled { opacity: 0.55; cursor: not-allowed; }
+
+        /* Top proposals sidebar */
+        .stats-list { display: flex; flex-direction: column; gap: 0.75rem; }
+        .stats-item {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            align-items: center; gap: 8px;
+        }
+        .stats-label {
+            font-size: 0.8rem; color: var(--stone);
+            white-space: nowrap; overflow: hidden;
+            text-overflow: ellipsis; min-width: 0;
+        }
+        .stats-bar-wrap {
+            width: 56px; height: 5px;
+            background: var(--bg-2); border-radius: 99px; overflow: hidden;
+        }
+        .stats-bar {
+            height: 100%; background: var(--cyan);
+            border-radius: 99px;
+            transition: width 0.4s ease;
+        }
+        .stats-num {
+            font-size: 0.72rem; font-weight: 700;
+            color: var(--cyan); min-width: 20px; text-align: right;
+        }
+
+        /* Info tips */
+        .info-tip {
+            display: flex; align-items: flex-start; gap: 10px;
+            font-size: 0.8rem; color: var(--stone-light);
+            line-height: 1.6; padding: 0.75rem;
+            background: var(--bg); border-radius: 9px;
+            margin-bottom: 0.6rem;
+        }
+        .info-tip:last-child { margin-bottom: 0; }
+        .info-tip i { color: var(--cyan); flex-shrink: 0; margin-top: 2px; font-size: 0.85rem; }
+
+        /* ── TOAST ───────────────────────────────── */
+        #toast {
+            position: fixed; bottom: 2rem; left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--text); color: var(--white);
+            padding: 10px 20px; border-radius: 999px;
+            font-size: 0.82rem; font-weight: 500;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.3s, transform 0.3s;
+            white-space: nowrap; z-index: 999;
+        }
+        #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        #toast.cyan { background: var(--cyan); }
+        #toast.error { background: var(--danger); }
+
+        /* ── REVEAL ──────────────────────────────── */
+        .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+        .reveal.show { opacity: 1; transform: none; }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+    <div class="nav-inner">
+        <a href="/" class="nav-brand">
+            <img src="{{ url_for('static', filename='images/mascota_3.png') }}" alt="USE">
+            <div class="nav-brand-name">USE</div>
+        </a>
+        <a href="/" class="nav-back">
+            <i class="fas fa-arrow-left"></i> Volver al inicio
+        </a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<div class="event-hero">
+    <div class="event-hero-inner">
+        <div class="event-tag">Tu voz importa</div>
+        <h1>Propuestas <em>estudiantiles</em></h1>
+        <p>Compartí tus ideas para mejorar el colegio. Votá las que más te gusten y apoyá las iniciativas de tus compañeros.</p>
+    </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+    <!-- LEFT: lista de propuestas -->
+    <div>
+        <div class="propuestas-header">
+            <div class="section-label">Propuestas de la comunidad</div>
+            <span class="propuestas-count" id="count-label">
+                {{ propuestas|length }} propuesta{{ 's' if propuestas|length != 1 else '' }}
+            </span>
+        </div>
+
+        <div class="propuestas-list" id="propuestas-list">
+
+            {% if propuestas %}
+                {% for p in propuestas %}
+                <div class="prop-card{% if p.ya_vote %} voted{% endif %}" id="card-{{ p.id }}">
+                    <span class="prop-num{% if loop.index == 1 %} top{% endif %}">#{{ loop.index }}</span>
+                    <div class="prop-info">
+                        <div class="prop-desc-text">{{ p.descripcion }}</div>
+                        <button class="btn-delete" onclick="eliminar({{ p.id }}, this)" title="Eliminar propuesta">
+                            <i class="fas fa-trash-can"></i>
+                        </button>
+                    </div>
+                    <button class="btn-vote{% if p.ya_vote %} active{% endif %}"
+                            onclick="votar({{ p.id }}, this)"
+                            data-id="{{ p.id }}"
+                            title="{{ 'Quitar voto' if p.ya_vote else 'Votar' }}">
+                        <i class="fa{% if p.ya_vote %}-solid{% else %}-regular{% endif %} fa-thumbs-up"></i>
+                        <span class="vote-count">{{ p.total_votos }}</span>
+                    </button>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div id="empty-state">
+                    <i class="fas fa-seedling"></i>
+                    <p>Todavía no hay propuestas. ¡Sé el primero en subir una idea!</p>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+    <!-- RIGHT: sidebar -->
+    <div class="sidebar">
+
+        <!-- Formulario -->
+        <div class="card reveal">
+            <div class="card-title"><i class="fas fa-pen-to-square" style="color:var(--cyan); margin-right:6px;"></i>Subí tu propuesta</div>
+
+            <div class="form-field">
+                <label>Tu idea <span style="color:var(--danger)">*</span></label>
+                <textarea id="input-desc" maxlength="300"
+                    placeholder="Ej: Instalar más enchufes en la biblioteca..."
+                    oninput="updateChar(this)"></textarea>
+                <div class="char-count"><span id="char-n">0</span>/300</div>
+            </div>
+
+            <button class="btn-submit" onclick="agregar()">
+                <i class="fas fa-paper-plane"></i> Publicar propuesta
+            </button>
+        </div>
+
+        <!-- Top propuestas -->
+        <div class="card reveal" id="stats-card" {% if not propuestas %}style="display:none"{% endif %}>
+            <div class="card-title"><i class="fas fa-fire" style="color:var(--cyan); margin-right:6px;"></i>Más votadas</div>
+            <div class="stats-list" id="stats-list">
+                {% set sorted_props = propuestas | sort(attribute='total_votos', reverse=True) %}
+                {% for p in sorted_props[:5] %}
+                {% set max_v = sorted_props[0].total_votos if sorted_props else 1 %}
+                <div class="stats-item">
+                    <span class="stats-label" title="{{ p.descripcion }}">{{ p.descripcion }}</span>
+                    <div class="stats-bar-wrap">
+                        <div class="stats-bar" style="width:{{ ((p.total_votos / max_v) * 100) | int if max_v > 0 else 0 }}%"></div>
+                    </div>
+                    <span class="stats-num">{{ p.total_votos }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Tips -->
+        <div class="card reveal">
+            <div class="card-title">¿Cómo funciona?</div>
+            <div class="info-tip">
+                <i class="fas fa-circle-info"></i>
+                <span>Podés votar una vez por propuesta. Si volvés a clicar, tu voto se retira.</span>
+            </div>
+            <div class="info-tip">
+                <i class="fas fa-shield-halved"></i>
+                <span>El sistema usa tu IP para evitar votos duplicados.</span>
+            </div>
+            <div class="info-tip">
+                <i class="fas fa-star"></i>
+                <span>Las propuestas más votadas son evaluadas por el gobierno estudiantil.</span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<script>
+    // ── Scroll reveal ─────────────────────────────
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) { e.target.classList.add('show'); observer.unobserve(e.target); }
+        });
+    }, { threshold: 0.06 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // ── Toast ─────────────────────────────────────
+    function showToast(msg, type = '') {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.className = 'show' + (type ? ' ' + type : '');
+        setTimeout(() => t.className = '', 2800);
+    }
+
+    // ── Char counter ──────────────────────────────
+    function updateChar(el) {
+        document.getElementById('char-n').textContent = el.value.length;
+    }
+
+    // ── Votar ─────────────────────────────────────
+    async function votar(propuestaId, btn) {
+        const contador = btn.querySelector('.vote-count');
+        const card = document.getElementById('card-' + propuestaId);
+        const votosOriginal = parseInt(contador.textContent) || 0;
+        const estabaActivo = btn.classList.contains('active');
+
+        // Optimistic UI
+        if (estabaActivo) {
+            contador.textContent = votosOriginal - 1;
+            btn.classList.remove('active');
+            card.classList.remove('voted');
+            btn.querySelector('i').className = 'fa-regular fa-thumbs-up';
+            btn.title = 'Votar';
+        } else {
+            contador.textContent = votosOriginal + 1;
+            btn.classList.add('active');
+            card.classList.add('voted');
+            btn.querySelector('i').className = 'fa-solid fa-thumbs-up';
+            btn.title = 'Quitar voto';
+        }
+
+        reordenarPropuestas();
+        actualizarStats();
+        btn.disabled = true;
+
+        try {
+            const res = await fetch(`/propuestas/votar/${propuestaId}`, { method: 'POST' });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || 'Error');
+            contador.textContent = data.total_votos;
+            reordenarPropuestas();
+            actualizarStats();
+        } catch (err) {
+            // revertir
+            contador.textContent = votosOriginal;
+            if (estabaActivo) {
+                btn.classList.add('active'); card.classList.add('voted');
+                btn.querySelector('i').className = 'fa-solid fa-thumbs-up';
+            } else {
+                btn.classList.remove('active'); card.classList.remove('voted');
+                btn.querySelector('i').className = 'fa-regular fa-thumbs-up';
+            }
+            showToast('Error de conexión', 'error');
+        } finally {
+            btn.disabled = false;
+        }
+    }
+
+    // ── Agregar propuesta ─────────────────────────
+    async function agregar() {
+        const desc = document.getElementById('input-desc').value.trim();
+        if (!desc) {
+            showToast('Escribí tu propuesta primero');
+            document.getElementById('input-desc').focus();
+            return;
+        }
+
+        const btn = document.querySelector('.btn-submit');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Publicando...';
+
+        try {
+            const res = await fetch('/propuestas/agregar', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ descripcion: desc })
+            });
+            const data = await res.json();
+            if (!res.ok) { showToast(data.error || 'No se pudo publicar', 'error'); return; }
+
+            document.getElementById('input-desc').value = '';
+            document.getElementById('char-n').textContent = '0';
+            insertarCard(data);
+            actualizarContador();
+            actualizarStats();
+            showToast('¡Propuesta publicada! 💡', 'cyan');
+        } catch {
+            showToast('Error de conexión', 'error');
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-paper-plane"></i> Publicar propuesta';
+        }
+    }
+
+    // ── Insertar nueva card ───────────────────────
+    function insertarCard(p) {
+        const list = document.getElementById('propuestas-list');
+        const empty = document.getElementById('empty-state');
+        if (empty) empty.remove();
+        document.getElementById('stats-card').style.display = '';
+
+        const card = document.createElement('div');
+        card.className = 'prop-card';
+        card.id = 'card-' + p.id;
+        card.innerHTML = `
+            <span class="prop-num">#${list.querySelectorAll('.prop-card').length + 1}</span>
+            <div class="prop-info">
+                <div class="prop-desc-text">${escapeHtml(p.descripcion)}</div>
+                <button class="btn-delete" onclick="eliminar(${p.id}, this)" title="Eliminar propuesta">
+                    <i class="fas fa-trash-can"></i>
+                </button>
+            </div>
+            <button class="btn-vote" onclick="votar(${p.id}, this)" data-id="${p.id}" title="Votar">
+                <i class="fa-regular fa-thumbs-up"></i>
+                <span class="vote-count">0</span>
+            </button>
+        `;
+        card.style.opacity = '0'; card.style.transform = 'translateY(10px)';
+        list.appendChild(card);
+        requestAnimationFrame(() => {
+            card.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+            card.style.opacity = '1'; card.style.transform = 'none';
+        });
+    }
+
+    // ── Eliminar propuesta ────────────────────────
+    async function eliminar(propuestaId, btn) {
+        if (!confirm('¿Eliminar esta propuesta?')) return;
+        try {
+            const res = await fetch(`/propuestas/eliminar/${propuestaId}`, { method: 'DELETE' });
+            if (!res.ok) { showToast('No se pudo eliminar', 'error'); return; }
+            const card = document.getElementById('card-' + propuestaId);
+            card.style.transition = 'opacity 0.3s, transform 0.3s';
+            card.style.opacity = '0'; card.style.transform = 'translateY(-8px)';
+            setTimeout(() => {
+                card.remove();
+                actualizarContador();
+                renumerarCards();
+                actualizarStats();
+                if (!document.querySelector('.prop-card')) {
+                    const list = document.getElementById('propuestas-list');
+                    list.innerHTML = `<div id="empty-state" style="padding:4rem 2rem;text-align:center;color:var(--stone-lighter);">
+                        <i class="fas fa-seedling" style="font-size:2rem;display:block;margin-bottom:1rem;opacity:.4;"></i>
+                        <p style="font-size:.9rem;">Todavía no hay propuestas. ¡Sé el primero en subir una idea!</p>
+                    </div>`;
+                    document.getElementById('stats-card').style.display = 'none';
+                }
+            }, 300);
+            showToast('Propuesta eliminada');
+        } catch {
+            showToast('Error de conexión', 'error');
+        }
+    }
+
+    // ── Reordenar por votos ───────────────────────
+    function reordenarPropuestas() {
+        const list = document.getElementById('propuestas-list');
+        const cards = Array.from(list.querySelectorAll('.prop-card'));
+        cards.sort((a, b) => {
+            const va = parseInt(a.querySelector('.vote-count').textContent) || 0;
+            const vb = parseInt(b.querySelector('.vote-count').textContent) || 0;
+            return vb - va;
+        });
+        cards.forEach((card, i) => {
+            const num = card.querySelector('.prop-num');
+            num.textContent = '#' + (i + 1);
+            num.classList.toggle('top', i === 0);
+            list.appendChild(card);
+        });
+    }
+
+    function renumerarCards() {
+        const cards = document.querySelectorAll('.prop-card');
+        cards.forEach((card, i) => {
+            const num = card.querySelector('.prop-num');
+            num.textContent = '#' + (i + 1);
+            num.classList.toggle('top', i === 0);
+        });
+    }
+
+    // ── Actualizar stats sidebar ──────────────────
+    function actualizarStats() {
+        const cards = Array.from(document.querySelectorAll('.prop-card'));
+        if (!cards.length) return;
+        const datos = cards.map(c => ({
+            desc: c.querySelector('.prop-desc-text').textContent,
+            votos: parseInt(c.querySelector('.vote-count').textContent) || 0
+        })).sort((a, b) => b.votos - a.votos).slice(0, 5);
+
+        const maxV = datos[0]?.votos || 1;
+        document.getElementById('stats-list').innerHTML = datos.map(d => `
+            <div class="stats-item">
+                <span class="stats-label" title="${escapeHtml(d.desc)}">${escapeHtml(d.desc)}</span>
+                <div class="stats-bar-wrap">
+                    <div class="stats-bar" style="width:${maxV > 0 ? (d.votos / maxV) * 100 : 0}%"></div>
+                </div>
+                <span class="stats-num">${d.votos}</span>
+            </div>
+        `).join('');
+    }
+
+    // ── Actualizar contador header ────────────────
+    function actualizarContador() {
+        const n = document.querySelectorAll('.prop-card').length;
+        document.getElementById('count-label').textContent = `${n} propuesta${n !== 1 ? 's' : ''}`;
+    }
+
+    // ── Escape HTML ───────────────────────────────
+    function escapeHtml(str) {
+        return String(str)
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+</script>
+</body>
+</html>

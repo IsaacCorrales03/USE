@@ -463,6 +463,45 @@
         }
         .pr-desc { font-size: 0.8rem; color: var(--stone-light); line-height: 1.65; font-weight: 300; }
 
+        /* ── PROP CTA ─────────────────────────────── */
+        .prop-cta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+        .prop-cta-card {
+            background: var(--bg-2);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.75rem;
+            transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+        }
+        .prop-cta-card:hover {
+            border-color: var(--cyan-mid);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(46,196,196,0.08);
+        }
+        .prop-cta-icon {
+            width: 40px; height: 40px; border-radius: 10px;
+            background: var(--cyan-light);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--cyan); font-size: 1rem; margin-bottom: 1.1rem;
+        }
+        .prop-cta-title {
+            font-size: 0.98rem; font-weight: 600;
+            color: var(--text); margin-bottom: 0.55rem;
+            letter-spacing: -0.01em;
+        }
+        .prop-cta-desc {
+            font-size: 0.82rem; color: var(--stone-light);
+            line-height: 1.7; font-weight: 300;
+        }
+        .prop-cta-btn-wrap {
+            display: flex; justify-content: center;
+            margin-top: 0.5rem;
+        }
+
         /* ── FOOTER ───────────────────────────────── */
         footer {
             background: var(--text);
@@ -546,7 +585,7 @@
             <a href="#propuestas">Propuestas</a>
             <a href="#cronograma">Cronograma</a>
             <a href="#torneos">Torneos</a>
-            <a href="#propuestas" class="nav-cta">Propuestas →</a>
+            <a href="/propuestas/" class="nav-cta">Subí tu propuesta →</a>
         </div>
 
         <button id="hamburger" aria-label="Menú">
@@ -785,6 +824,43 @@
     </div>
 </section>
 
+<div class="divider"></div>
+
+<!-- SUBÍ TU PROPUESTA -->
+<section id="subir-propuesta" class="section alt">
+    <div class="s-inner">
+        <div class="s-head reveal">
+            <div class="s-tag">Tu voz importa</div>
+            <h2 class="s-title">Subí tu <em>propuesta</em></h2>
+            <p class="s-desc">¿Tenés una idea para mejorar el colegio? Compartila con todos y votá las que más te gusten.</p>
+        </div>
+
+        <div class="prop-cta-grid">
+            <div class="prop-cta-card reveal d1">
+                <div class="prop-cta-icon"><i class="fas fa-lightbulb"></i></div>
+                <div class="prop-cta-title">Proponé algo nuevo</div>
+                <div class="prop-cta-desc">Escribí tu idea y que la comunidad estudiantil la conozca. Puede ser sobre instalaciones, actividades, mejoras o lo que se te ocurra.</div>
+            </div>
+            <div class="prop-cta-card reveal d2">
+                <div class="prop-cta-icon"><i class="fas fa-thumbs-up"></i></div>
+                <div class="prop-cta-title">Votá las ideas</div>
+                <div class="prop-cta-desc">Apoyá las propuestas que más te convencen. Las ideas con más votos llegan al radar del gobierno estudiantil.</div>
+            </div>
+            <div class="prop-cta-card reveal d3">
+                <div class="prop-cta-icon"><i class="fas fa-rocket"></i></div>
+                <div class="prop-cta-title">Hacelas realidad</div>
+                <div class="prop-cta-desc">Las propuestas más votadas se evalúan para convertirse en proyectos reales que beneficien a toda la institución.</div>
+            </div>
+        </div>
+
+        <div class="prop-cta-btn-wrap reveal">
+            <a href="/propuestas/" class="btn-dark" style="font-size:0.95rem; padding:15px 36px;">
+                <i class="fas fa-pen-to-square"></i> Ver y subir propuestas
+            </a>
+        </div>
+    </div>
+</section>
+
 <!-- FOOTER -->
 <footer>
     <div class="ft-inner">
@@ -800,7 +876,7 @@
                 <a href="#eventos">Eventos</a>
                 <a href="#miembros">Miembros</a>
                 <a href="#objetivos">Objetivos</a>
-                <a href="#propuestas">Propuestas</a>
+                <a href="/propuestas/">Propuestas</a>
                 <a href="#cronograma">Cronograma</a>
                 <a href="#torneos">Torneos</a>
             </div>
