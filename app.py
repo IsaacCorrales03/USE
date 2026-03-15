@@ -123,9 +123,8 @@ def ping_periodico():
 
     while True:
         try:
-            print("Haciendo ping a la URL...")
             requests.get(
-                "https://union-social-estudiantil.onrender.com/",
+                "https://partido-union-social-estudiantil.onrender.com",
                 timeout=10
             )
         except Exception as e:
